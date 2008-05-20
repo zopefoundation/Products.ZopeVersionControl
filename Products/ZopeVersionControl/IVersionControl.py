@@ -13,7 +13,7 @@
 
 __version__='$Revision: 1.7 $'[11:-2]
 
-from Interface import Interface
+from zope.interface import Interface
 
 
 class IVersionControl(Interface):

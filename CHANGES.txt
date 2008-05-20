@@ -4,6 +4,7 @@ Changelog
 1.0a2 (unreleased)
 ------------------
 
+    - Purge old zope2 Interface interfaces for Zope 2.12 compatibility.
 
 1.0a1 (2008/05/03)
 ------------------

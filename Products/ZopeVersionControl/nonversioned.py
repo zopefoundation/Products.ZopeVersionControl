@@ -20,6 +20,7 @@ from OFS.ObjectManager import ObjectManager
 
 from IVersionControl import INonVersionedData
 from VersionSupport import isAVersionableResource
+from zope.interface import implements
 
 
 try:
@@ -45,7 +46,7 @@ def getNonVersionedDataAdapter(obj):
     base = aq_base(obj)
     # If the object implements INonVersionedData, let it say
     # what its items are.
-    if INonVersionedData.isImplementedBy(base):
+    if INonVersionedData.providedBy(base):
         return obj
     # If the object is an ObjectManager, use the ObjectManager adapter.
     try:
@@ -78,7 +79,7 @@ def restoreNonVersionedData(obj, dict):
 class StandardNonVersionedDataAdapter:
     """Non-versioned data adapter for arbitrary things.
     """
-    __implements__ = INonVersionedData
+    implements(INonVersionedData)
 
     def __init__(self, obj):
         self.obj = obj
@@ -114,7 +115,7 @@ class StandardNonVersionedDataAdapter:
 class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
     """Non-versioned data adapter for object managers.
     """
-    __implements__ = INonVersionedData
+    implements(INonVersionedData)
 
     def listNonVersionedObjects(self):
         contents = self.getNonVersionedData()['contents']
