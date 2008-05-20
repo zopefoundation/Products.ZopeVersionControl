@@ -18,7 +18,7 @@ $Id$
 from Acquisition import aq_base
 from OFS.ObjectManager import ObjectManager
 
-from IVersionControl import INonVersionedData
+from interfaces import INonVersionedData
 from VersionSupport import isAVersionableResource
 from zope.interface import implements
 
@@ -49,15 +49,8 @@ def getNonVersionedDataAdapter(obj):
     if INonVersionedData.providedBy(base):
         return obj
     # If the object is an ObjectManager, use the ObjectManager adapter.
-    try:
-        is_obj_mgr = isinstance(base, ObjectManager)
-    except TypeError:
-        # Python 2.1 isinstance() dislikes ExtensionClass instances.
-        # This is an adequate workaround.
-        pass
-    else:
-        if is_obj_mgr:
-            return ObjectManagerNonVersionedDataAdapter(obj)
+    if isinstance(base, ObjectManager):
+        return ObjectManagerNonVersionedDataAdapter(obj)
     # Otherwise use the standard adapter.
     return StandardNonVersionedDataAdapter(obj)
 

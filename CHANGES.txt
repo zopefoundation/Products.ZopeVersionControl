@@ -5,6 +5,7 @@ Changelog
 ------------------
 
     - Purge old zope2 Interface interfaces for Zope 2.12 compatibility.
+      Note that they are internal to the implementation of this module.
 
 1.0a1 (2008/05/03)
 ------------------
