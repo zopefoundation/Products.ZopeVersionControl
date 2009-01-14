@@ -11,7 +11,8 @@
 # 
 ##############################################################################
 
-from Globals import InitializeClass, Persistent
+from App.class_init import InitializeClass
+from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 
 

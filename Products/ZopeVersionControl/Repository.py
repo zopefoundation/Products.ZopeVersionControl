@@ -18,7 +18,8 @@ from random import randint
 
 from Acquisition import Implicit, aq_parent, aq_inner
 from ZopeVersionHistory import ZopeVersionHistory
-from Globals import InitializeClass, Persistent
+from App.class_init import InitializeClass
+from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 from Utility import use_vc_permission, _findPath
 from Utility import isAVersionableResource, VersionControlError, VersionInfo

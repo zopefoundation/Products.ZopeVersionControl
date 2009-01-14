@@ -18,7 +18,8 @@ from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from App.Common import package_home
 from DateTime import DateTime
-from Globals import InitializeClass, Persistent
+from App.class_init import InitializeClass
+from Persistence import Persistent
 from ZODB.TimeStamp import TimeStamp
 
 try:

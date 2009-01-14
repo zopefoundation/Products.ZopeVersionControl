@@ -14,7 +14,8 @@
 __version__='$Revision: 1.4 $'[11:-2]
 
 import ExtensionClass, AccessControl, Acquisition
-from Globals import DTMLFile, InitializeClass
+from App.class_init import InitializeClass
+from App.special_dtml import DTMLFile
 from Utility import VersionControlError, isAVersionableResource
 from Utility import use_vc_permission
 

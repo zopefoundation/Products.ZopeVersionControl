@@ -13,7 +13,8 @@
 
 __version__='$Revision: 1.2 $'[11:-2]
 
-from Globals import DTMLFile, InitializeClass
+from App.class_init import InitializeClass
+from App.special_dtml import DTMLFile
 import OFS, AccessControl, Acquisition
 import VersionHistory
 

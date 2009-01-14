@@ -17,5 +17,11 @@ setup(name='Products.ZopeVersionControl',
       zip_safe=False,
       install_requires=[
         'setuptools',
+        'zope.interface',
+        # 'Acquisition',
+        # 'DateTime',
+        # 'transaction',
+        # 'ZODB3',
+        # 'Zope2',
       ],
       )
