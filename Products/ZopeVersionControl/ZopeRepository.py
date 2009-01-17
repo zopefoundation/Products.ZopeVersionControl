@@ -13,7 +13,7 @@
 
 __version__='$Revision: 1.5 $'[11:-2]
 
-from App.class_init import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
 from App.special_dtml import DTMLFile
 from SequenceWrapper import SequenceWrapper
 import OFS, AccessControl

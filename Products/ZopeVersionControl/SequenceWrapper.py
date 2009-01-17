@@ -11,10 +11,6 @@
 # 
 ##############################################################################
 
-from App.class_init import InitializeClass
-from Persistence import Persistent
-from AccessControl import ClassSecurityInfo
-
 
 class SequenceWrapper:
     """A helper that manages lazy acquisition wrapping."""

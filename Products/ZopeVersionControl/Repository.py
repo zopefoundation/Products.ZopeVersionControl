@@ -18,7 +18,7 @@ from random import randint
 
 from Acquisition import Implicit, aq_parent, aq_inner
 from ZopeVersionHistory import ZopeVersionHistory
-from App.class_init import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
 from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 from Utility import use_vc_permission, _findPath

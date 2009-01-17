@@ -13,7 +13,7 @@
 
 __version__='$Revision: 1.4 $'[11:-2]
 
-from App.class_init import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
 from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 from EventLog import EventLog, LogEntry

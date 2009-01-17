@@ -19,7 +19,7 @@ from cStringIO import StringIO
 from cPickle import Pickler, Unpickler
 
 from Acquisition import Implicit, aq_parent, aq_inner, aq_base
-from App.class_init import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
 from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 from BTrees.OOBTree import OOBTree

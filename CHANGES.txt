@@ -4,9 +4,11 @@ Changelog
 1.0a2 (unreleased)
 ------------------
 
+    - Changed the Globals.InitializeClass import change in a backward
+      compatible way.
+
     - Fixed deprecation warnings for use of Globals. Specified package
       dependencies.
-      [hannosch]
 
     - Purge old zope2 Interface interfaces for Zope 2.12 compatibility.
       Note that they are internal to the implementation of this module.

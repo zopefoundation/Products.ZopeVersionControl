@@ -14,7 +14,7 @@
 __version__='$Revision: 1.4 $'[11:-2]
 
 import ZopeRepository, OFS
-from App.class_init import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
 from App.ImageFile import ImageFile
 
 def initialize(context):
