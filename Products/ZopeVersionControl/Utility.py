@@ -92,7 +92,7 @@ class ReadOnlyJar:
         return getattr(self.__base__, name)
 
     def commit(*args, **kw):
-        raise VersionWriteError(
+        raise VersionControlError(
             'Old versions of objects cannot be modified.'
             )
 
