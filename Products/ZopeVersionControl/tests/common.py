@@ -39,7 +39,7 @@ def common_setUp(self):
     from Products.ZopeVersionControl.ZopeRepository import addRepository
     from ZODB import DB
     from ZODB.DemoStorage import DemoStorage
-    s = DemoStorage(quota=(1<<20))
+    s = DemoStorage()
     self.connection = DB( s ).open()
     try:
         r = self.connection.root()
