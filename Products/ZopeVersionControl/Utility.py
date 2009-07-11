@@ -14,10 +14,8 @@
 import os
 import time
 
-from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from App.Common import package_home
-from DateTime import DateTime
 from App.class_init import default__class_init__ as InitializeClass
 from Persistence import Persistent
 from ZODB.TimeStamp import TimeStamp
@@ -130,7 +128,11 @@ def _findModificationTime(object):
     latest = mtime
     conn = object._p_jar
     load = conn._storage.load
-    version = conn._version
+    try:
+        version = conn._version
+    except AttributeError:
+        # ZODB 3.9+ compatibility
+        version = None
     refs = referencesf
 
     oids=[object._p_oid]
