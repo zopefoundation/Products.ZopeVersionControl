@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.1 - unreleased
+1.1.1 - 2010-08-04
 ------------------
 
 - Made compatible with Zope 2.13 and ZODB 3.10.
