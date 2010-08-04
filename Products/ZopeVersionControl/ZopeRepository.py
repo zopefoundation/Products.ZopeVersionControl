@@ -11,19 +11,24 @@
 # 
 ##############################################################################
 
-__version__='$Revision: 1.5 $'[11:-2]
-
 from App.class_init import default__class_init__ as InitializeClass
 from App.special_dtml import DTMLFile
 from SequenceWrapper import SequenceWrapper
-import OFS, AccessControl
+import AccessControl
+import OFS
 import Repository
+
+# BBB Zope 2.12
+try:
+    from OFS.role import RoleManager
+except ImportError:
+    from AccessControl.Role import RoleManager
 
 
 class ZopeRepository(
     Repository.Repository,
-    AccessControl.Role.RoleManager,
-    OFS.SimpleItem.Item,
+    RoleManager,
+    OFS.SimpleItem.Item
     ):
     """The ZopeRepository class builds on the core Repository implementation
        to provide the Zope management interface and other product trappings."""
@@ -38,7 +43,7 @@ class ZopeRepository(
           {'label': 'Properties', 'action':'manage_properties_form',
            'help': ('ZopeVersionControl', 'Repository-Properties.stx')},
         ) +
-        AccessControl.Role.RoleManager.manage_options +
+        RoleManager.manage_options +
         OFS.SimpleItem.Item.manage_options
         )
 

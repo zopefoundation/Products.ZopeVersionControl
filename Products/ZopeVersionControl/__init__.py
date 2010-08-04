@@ -11,9 +11,7 @@
 # 
 ##############################################################################
 
-__version__='$Revision: 1.4 $'[11:-2]
-
-import ZopeRepository, OFS
+import ZopeRepository
 from App.class_init import default__class_init__ as InitializeClass
 from App.ImageFile import ImageFile
 
@@ -66,6 +64,7 @@ def install_hack():
 
 
 def registerIcon(filename):
-    setattr(OFS.misc_.misc_.ZopeVersionControl, filename, 
+    from OFS import misc_
+    setattr(misc_.misc_.ZopeVersionControl, filename, 
             ImageFile('www/%s' % filename, globals())
             )

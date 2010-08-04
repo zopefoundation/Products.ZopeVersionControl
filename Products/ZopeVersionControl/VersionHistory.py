@@ -23,7 +23,9 @@ from BTrees.IOBTree import IOBTree
 from BTrees.IIBTree import IIBTree
 from BTrees.OOBTree import OOBTree
 from Acquisition import Implicit
-import sys, time
+import time
+
+MAX32 = 2**31 - 1
 
 
 class VersionHistory(Implicit, Persistent):
@@ -39,7 +41,7 @@ class VersionHistory(Implicit, Persistent):
         self._versions = OOBTree()
         self._branches = OOBTree()
         self._labels = OOBTree()
-        mainline = self.createBranch('mainline', None)
+        self.createBranch('mainline', None)
         self.id = history_id
 
     security = ClassSecurityInfo()
@@ -246,7 +248,8 @@ class BranchInfo(Implicit, Persistent):
            version to support ordering and date lookups."""
         if len(self.m_order):
             key = self.m_order.minKey() - 1
-        else: key = sys.maxint
+        else:
+            key = MAX32
         self.m_order[key] = version.id
         timestamp = int(version.date_created / 60.0)
         self.m_date[timestamp] = key

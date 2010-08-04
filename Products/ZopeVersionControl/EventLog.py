@@ -16,7 +16,9 @@ from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 from BTrees.IOBTree import IOBTree
 from Utility import _findUserId
-import sys, time
+import time
+
+MAX32 = 2**31 - 1
 
 
 class EventLog(Persistent):
@@ -33,7 +35,7 @@ class EventLog(Persistent):
         if len(self._data):
             key = self._data.minKey() - 1
         else:
-            key = sys.maxint
+            key = MAX32
         self._data[key] = entry
 
     security.declarePrivate('getEntries')
