@@ -18,7 +18,7 @@ from BTrees.IOBTree import IOBTree
 from Utility import _findUserId
 import time
 
-MAX32 = 2**31 - 1
+MAX32 = int(2**31 - 1)
 
 
 class EventLog(Persistent):

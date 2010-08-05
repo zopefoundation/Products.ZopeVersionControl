@@ -25,7 +25,7 @@ from BTrees.OOBTree import OOBTree
 from Acquisition import Implicit
 import time
 
-MAX32 = 2**31 - 1
+MAX32 = int(2**31 - 1)
 
 
 class VersionHistory(Implicit, Persistent):

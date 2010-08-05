@@ -1,9 +1,11 @@
 Changelog
 =========
 
-1.1.2 - unreleased
+1.1.2 - 2010-08-05
 ------------------
 
+- Make sure we cast MAX32 to an int, as ``2**31`` would be automatically
+  overflow to a long on 32bit Python's.
 
 1.1.1 - 2010-08-04
 ------------------
