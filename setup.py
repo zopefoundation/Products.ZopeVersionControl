@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='Products.ZopeVersionControl',
-      version='1.1.2',
+      version='1.1.3',
       description="Zope Version Control",
       long_description=open("CHANGES.txt").read(),
       classifiers=[
