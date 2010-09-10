@@ -4,11 +4,13 @@ Changelog
 1.1.3 - unreleased
 ------------------
 
+- Made sure the VersionHistory.BranchInfo class fulfill the API,
+  providing a getId method. Added missing security declarations.
 
 1.1.2 - 2010-08-05
 ------------------
 
-- Make sure we cast MAX32 to an int, as ``2**31`` would be automatically
+- Made sure we cast MAX32 to an int, as ``2**31`` would be automatically
   overflow to a long on 32bit Python's.
 
 1.1.1 - 2010-08-04

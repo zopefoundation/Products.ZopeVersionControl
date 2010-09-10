@@ -1,14 +1,14 @@
 ##############################################################################
 #
 # Copyright (c) 2001 Zope Foundation and Contributors.
-# 
+#
 # This software is subject to the provisions of the Zope Public License,
 # Version 2.0 (ZPL).  A copy of the ZPL should accompany this distribution.
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
 # WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE
-# 
+#
 ##############################################################################
 
 __version__='$Revision: 1.4 $'[11:-2]
@@ -204,7 +204,7 @@ class VersionHistory(Implicit, Persistent):
             # up to the caller to decide what to do in this situation.
             if branch.root is None:
                 return None
-            
+
             # If the branch has a root (a version in another branch), then
             # we check the root and do it again with the ancestor branch.
             rootver = self._versions[branch.root]
@@ -222,6 +222,7 @@ class VersionHistory(Implicit, Persistent):
             return self._branches[branch_id].versionIds()
         return self._versions.keys()
 
+
 InitializeClass(VersionHistory)
 
 
@@ -229,6 +230,8 @@ class BranchInfo(Implicit, Persistent):
     """A utility class to hold branch (line-of-descent) information. It
        maintains the name of the branch, the version id of the root of
        the branch and indices to allow for efficient lookups."""
+
+    security = ClassSecurityInfo()
 
     def __init__(self, name, root):
         # m_order maintains a newest-first mapping of int -> version id.
@@ -242,6 +245,12 @@ class BranchInfo(Implicit, Persistent):
         self.name = name
         self.root = root
 
+    security.declarePublic('getId')
+    def getId(self):
+        """Return the name of the object as string."""
+        return self.name
+
+    security.declarePrivate('append')
     def append(self, version):
         """Append a version to the branch information. Note that this
            does not store the actual version, but metadata about the
@@ -254,10 +263,12 @@ class BranchInfo(Implicit, Persistent):
         timestamp = int(version.date_created / 60.0)
         self.m_date[timestamp] = key
 
+    security.declarePrivate('versionIds')
     def versionIds(self):
         """Return a newest-first sequence of version ids in the branch."""
         return self.m_order.values()
 
+    security.declarePrivate('latest')
     def latest(self):
         """Return the version id of the latest version in the branch."""
         mapping = self.m_order
@@ -267,5 +278,6 @@ class BranchInfo(Implicit, Persistent):
 
     def __len__(self):
         return len(self.m_order)
+
 
 InitializeClass(BranchInfo)
