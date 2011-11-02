@@ -65,6 +65,11 @@ def install_hack():
 
 def registerIcon(filename):
     from OFS import misc_
-    setattr(misc_.misc_.ZopeVersionControl, filename, 
+    try:
+        info = misc_.misc_.ZopeVersionControl
+    except AttributeError:
+        # Zope trunk
+        return
+    setattr(info, filename, 
             ImageFile('www/%s' % filename, globals())
             )
