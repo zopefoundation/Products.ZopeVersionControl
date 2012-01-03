@@ -1,14 +1,14 @@
 ##############################################################################
 #
 # Copyright (c) 2001 Zope Foundation and Contributors.
-# 
+#
 # This software is subject to the provisions of the Zope Public License,
 # Version 2.0 (ZPL).  A copy of the ZPL should accompany this distribution.
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
 # WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE
-# 
+#
 ##############################################################################
 
 __version__='$Revision: 1.7 $'[11:-2]
@@ -17,7 +17,7 @@ from zope.interface import Interface
 
 
 class IVersionControl(Interface):
-    """The version control interface serves as the main API for version 
+    """The version control interface serves as the main API for version
        control operations. The interface hides most of the details of
        version data storage and retrieval.
 
@@ -28,7 +28,7 @@ class IVersionControl(Interface):
 
        The goal of this version of the version control interface is to
        support simple linear versioning with support for labelled versions.
-       Future versions or extensions of this interface will likely support 
+       Future versions or extensions of this interface will likely support
        more advanced version control features such as concurrent lines of
        descent (activities) and collection versioning."""
 
@@ -62,7 +62,7 @@ class IVersionControl(Interface):
     def isResourceChanged(object):
         """
         Return true if the state of a resource has changed in a transaction
-        *after* the version bookkeeping was saved. Note that this method is 
+        *after* the version bookkeeping was saved. Note that this method is
         not appropriate for detecting changes within a transaction!
 
         Permission: public
@@ -86,7 +86,7 @@ class IVersionControl(Interface):
         After being placed under version control, the resource is logically
         in the 'checked-in' state.
 
-        If no message is passed the 'Initial checkin.' message string is 
+        If no message is passed the 'Initial checkin.' message string is
         written as the message log entry.
 
         Permission: Use version control
@@ -190,7 +190,7 @@ class IVersionInfo(Interface):
 
          history_id - the id of the version history related to the version
          controlled resource.
-         
+
          version_id - the version id that the version controlled resource
          is based upon.
 

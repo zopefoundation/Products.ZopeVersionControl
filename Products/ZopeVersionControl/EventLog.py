@@ -1,14 +1,14 @@
 ##############################################################################
 #
 # Copyright (c) 2001 Zope Foundation and Contributors.
-# 
+#
 # This software is subject to the provisions of the Zope Public License,
 # Version 2.0 (ZPL).  A copy of the ZPL should accompany this distribution.
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
 # WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE
-# 
+#
 ##############################################################################
 
 from App.class_init import default__class_init__ as InitializeClass
@@ -45,7 +45,7 @@ class EventLog(Persistent):
 
     def __len__(self):
         return len(self._data)
-    
+
     def __nonzero__(self):
         return len(self._data) > 0
 
@@ -54,7 +54,7 @@ InitializeClass(EventLog)
 
 class LogEntry(Persistent):
     """A LogEntry contains audit information about a version control
-       operation. Actions that cause audit records to be created include 
+       operation. Actions that cause audit records to be created include
        checkout and checkin. Log entry information can be read (but
        not changed) by restricted code."""
 

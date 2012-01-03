@@ -1,14 +1,14 @@
 ##############################################################################
 #
 # Copyright (c) 2001 Zope Foundation and Contributors.
-# 
+#
 # This software is subject to the provisions of the Zope Public License,
 # Version 2.0 (ZPL).  A copy of the ZPL should accompany this distribution.
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
 # WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE
-# 
+#
 ##############################################################################
 """ Test the ZVC machinery
 
@@ -22,7 +22,7 @@ from common import common_tearDown
 from common import common_commit
 
 class VersionControlTests(unittest.TestCase):
- 
+
     setUp = common_setUp
     tearDown = common_tearDown
     commit = common_commit
@@ -170,7 +170,7 @@ class VersionControlTests(unittest.TestCase):
                               )
 
         info = repository.getVersionInfo(document)
-    
+
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
         self.failUnless(record.version_id == info.version_id)
@@ -465,7 +465,7 @@ class VersionControlTests(unittest.TestCase):
 
             repository.checkoutResource(document)
             self.commit()
-                
+
             document.manage_edit('activity change %d' % n, '')
             self.commit()
 
@@ -749,7 +749,7 @@ class VersionControlTests(unittest.TestCase):
         self.assertEqual(document.__ac_local_roles__, {})
 
     def testNonVersionedAttributeWithAcquisition(self):
-        # Test a non-version-controlled attribute 
+        # Test a non-version-controlled attribute
         # that is acquired does not cause an error
         self.document1.__vc_ignore__ = ('dummy_attr',)
         self.folder1.dummy_attr = 'dummy_attr'
