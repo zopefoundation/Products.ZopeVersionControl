@@ -43,7 +43,7 @@ def common_setUp(self):
     if PY3:
         from io import cStringIO
     else:
-        from cStringIO import cStringIO
+        from cStringIO import StringIO as cStringIO
 
     s = DemoStorage()
     self.connection = DB( s ).open()
