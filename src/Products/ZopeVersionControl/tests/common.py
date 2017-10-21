@@ -26,7 +26,6 @@ def common_setUp(self):
     # Install a hack to make SimpleItem version aware, so that the
     # tests work. In normal development, you would mix in the
     # VersionSupport class on an as-needed basis.
-    import cStringIO
     from AccessControl.SecurityManagement import newSecurityManager
     from OFS.Application import Application
     from OFS.DTMLDocument import addDTMLDocument
@@ -38,7 +37,14 @@ def common_setUp(self):
 
     from Products.ZopeVersionControl.ZopeRepository import addRepository
     from ZODB import DB
+    from ZODB._compat import PY3
     from ZODB.DemoStorage import DemoStorage
+
+    if PY3:
+        from io import cStringIO
+    else:
+        from cStringIO import cStringIO
+
     s = DemoStorage()
     self.connection = DB( s ).open()
     try:
@@ -46,7 +52,7 @@ def common_setUp(self):
         a = Application()
         r['Application'] = a
         self.root = a
-        responseOut = self.responseOut = cStringIO.StringIO()
+        responseOut = self.responseOut = cStringIO()
         self.app = makerequest( self.root, stdout=responseOut )
         self.app.acl_users.userFolderAddUser('UnitTester', '123', (), ())
         manage_addFolder(self.app, 'folder1')

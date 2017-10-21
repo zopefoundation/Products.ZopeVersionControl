@@ -28,7 +28,7 @@ setup(
         'Acquisition',
         'DateTime',
         'transaction',
-        'ZODB3',
+        'ZODB',
         'Zope2',
     ],
 )
