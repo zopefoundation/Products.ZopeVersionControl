@@ -11,9 +11,10 @@
 #
 ##############################################################################
 
-import ZopeRepository
+from . import ZopeRepository
 from App.class_init import default__class_init__ as InitializeClass
 from App.ImageFile import ImageFile
+
 
 def initialize(context):
 

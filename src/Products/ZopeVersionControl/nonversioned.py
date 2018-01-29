@@ -15,13 +15,11 @@
 $Id$
 """
 
+from .interfaces import INonVersionedData
+from .VersionSupport import isAVersionableResource
 from Acquisition import aq_base
 from OFS.ObjectManager import ObjectManager
-
-from interfaces import INonVersionedData
-from VersionSupport import isAVersionableResource
-from zope.interface import implements
-
+from zope.interface import implementer
 
 try:
     # Optional support for references.
@@ -69,10 +67,10 @@ def restoreNonVersionedData(obj, dict):
 
 
 
+@implementer(INonVersionedData)
 class StandardNonVersionedDataAdapter:
     """Non-versioned data adapter for arbitrary things.
     """
-    implements(INonVersionedData)
 
     def __init__(self, obj):
         self.obj = obj
@@ -105,10 +103,10 @@ class StandardNonVersionedDataAdapter:
                 setattr(aq_base(self.obj), attr, data[attr])
 
 
+@implementer(INonVersionedData)
 class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
     """Non-versioned data adapter for object managers.
     """
-    implements(INonVersionedData)
 
     def listNonVersionedObjects(self):
         contents = self.getNonVersionedData()['contents']

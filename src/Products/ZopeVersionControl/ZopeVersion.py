@@ -11,10 +11,12 @@
 #
 ##############################################################################
 
+from . import Version
 from App.class_init import default__class_init__ as InitializeClass
 from App.special_dtml import DTMLFile
-import OFS, AccessControl
-import Version
+
+import OFS
+import AccessControl
 
 # BBB Zope 2.12
 try:

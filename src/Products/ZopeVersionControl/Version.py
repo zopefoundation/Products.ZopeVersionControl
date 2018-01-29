@@ -22,10 +22,10 @@ from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
-from Utility import VersionControlError
+from .Utility import VersionControlError
 from ZODB._compat import BytesIO
 from ZODB._compat import Pickler, Unpickler
-from nonversioned import listNonVersionedObjects, removeNonVersionedData
+from .nonversioned import listNonVersionedObjects, removeNonVersionedData
 
 
 def cloneByPickle(obj, ignore_list=()):

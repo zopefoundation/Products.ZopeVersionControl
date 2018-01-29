@@ -11,25 +11,22 @@
 #
 ##############################################################################
 
-__version__='$Revision: 1.14 $'[11:-2]
-
-import time
+from . import Utility
+from .EventLog import LogEntry
+from .nonversioned import getNonVersionedData, restoreNonVersionedData
+from .Utility import isAVersionableResource, VersionControlError, VersionInfo
+from .Utility import use_vc_permission, _findPath
+from .ZopeVersionHistory import ZopeVersionHistory
+from AccessControl import ClassSecurityInfo
+from Acquisition import Implicit, aq_parent, aq_inner
+from App.class_init import default__class_init__ as InitializeClass
+from BTrees.OIBTree import OIBTree
+from BTrees.OOBTree import OOBTree
+from DateTime.DateTime import DateTime
+from Persistence import Persistent
 from random import randint
 
-from Acquisition import Implicit, aq_parent, aq_inner
-from ZopeVersionHistory import ZopeVersionHistory
-from App.class_init import default__class_init__ as InitializeClass
-from Persistence import Persistent
-from AccessControl import ClassSecurityInfo
-from Utility import use_vc_permission, _findPath
-from Utility import isAVersionableResource, VersionControlError, VersionInfo
-from DateTime.DateTime import DateTime
-from BTrees.OOBTree import OOBTree
-from BTrees.OIBTree import OIBTree
-
-from EventLog import LogEntry
-import Utility
-from nonversioned import getNonVersionedData, restoreNonVersionedData
+import time
 
 
 class Repository(Implicit, Persistent):
