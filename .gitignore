@@ -6,6 +6,7 @@ lib
 include
 man
 parts
+*.egg-info/
 
 __pycache__
 .*
