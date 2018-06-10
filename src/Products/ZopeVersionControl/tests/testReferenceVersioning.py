@@ -16,8 +16,8 @@ $Id$
 """
 import unittest
 
-from common import common_setUp
-from common import common_tearDown
+from .common import common_setUp
+from .common import common_tearDown
 
 has_refs = 1
 try:

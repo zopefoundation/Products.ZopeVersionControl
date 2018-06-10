@@ -16,10 +16,10 @@ $Id$
 """
 import unittest
 
-from common import get_transaction
-from common import common_setUp
-from common import common_tearDown
-from common import common_commit
+from .common import get_transaction
+from .common import common_setUp
+from .common import common_tearDown
+from .common import common_commit
 
 class VersionControlTests(unittest.TestCase):
 
