@@ -70,7 +70,7 @@ class VersionInfo(Persistent):
         for name, value in self.__dict__.items():
             dict[name] = value
         if clear_sticky:
-            if dict.has_key('sticky'):
+            if 'sticky' in dict:
                 del dict['sticky']
         info.user_id = _findUserId()
         info.timestamp = time.time()
@@ -137,7 +137,7 @@ def _findModificationTime(object):
 
     oids=[object._p_oid]
     done_oids={}
-    done=done_oids.has_key
+    done=lambda x: x in done_oids
     first = 1
 
     while oids:

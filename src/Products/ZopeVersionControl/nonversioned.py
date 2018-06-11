@@ -99,7 +99,7 @@ class StandardNonVersionedDataAdapter:
 
     def restoreNonVersionedData(self, data):
         for attr in self.attrs:
-            if data.has_key(attr):
+            if attr in data:
                 setattr(aq_base(self.obj), attr, data[attr])
 
 
@@ -122,7 +122,7 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
             removed[name] = 1
         if obj._objects:
             obj._objects = tuple([info for info in obj._objects
-                                  if not removed.has_key(info['id'])])
+                                  if info['id'] not in removed])
 
     def getNonVersionedData(self):
         contents = {}
@@ -152,7 +152,7 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
             ignore[name] = 1
         # Restore the items of the container.
         for name, value in data['contents'].items():
-            if not ignore.has_key(name):
+            if name not in ignore:
                 obj._setOb(name, aq_base(value))
                 if not hasattr(obj, '_tree'):
                     # Avoid generating events, since nothing was ever really

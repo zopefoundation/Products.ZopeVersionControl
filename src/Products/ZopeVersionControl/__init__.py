@@ -36,7 +36,7 @@ def initialize(context):
 def install_hack():
     # Hackery - don't try this at home, kids. :) This is temporary for
     # testing purposes only.
-    from VersionSupport import VersionSupport
+    from .VersionSupport import VersionSupport
     import OFS.SimpleItem, App.Management
 
     method = App.Management.Tabs.filtered_manage_options

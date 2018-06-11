@@ -52,7 +52,7 @@ class Repository(Implicit, Persistent):
         # the version or version history yet have a _p_jar, which causes
         # copy operations to fail. To work around that, we share our _p_jar.
         history_id = None
-        while history_id is None or self._histories.has_key(history_id):
+        while history_id is None or history_id in self._histories:
             history_id = str(randint(1, 9999999999))
         history = ZopeVersionHistory(history_id, object)
         self._histories[history_id] = history
@@ -78,8 +78,8 @@ class Repository(Implicit, Persistent):
                 "The class of the versioned object has changed. %s != %s"
                 % (repr(obj.__class__, new_state.__class__)))
         obj._p_changed = 1
-        for key in obj.__dict__.keys():
-            if not new_state.__dict__.has_key(key):
+        for key in list(obj.__dict__.keys()):
+            if not key in new_state.__dict__:
                 del obj.__dict__[key]
         for key, value in new_state.__dict__.items():
             obj.__dict__[key] = value
@@ -329,11 +329,11 @@ class Repository(Implicit, Persistent):
                 version = history.getVersionById(selector)
                 sticky = ('V', selector)
 
-            elif self._labels.has_key(selector):
+            elif selector in self._labels:
                 version = history.getVersionByLabel(selector)
                 sticky = ('L', selector)
 
-            elif self._branches.has_key(selector):
+            elif selector in self._branches:
                 version = history.getLatestVersion(selector)
                 if selector == 'mainline':
                     sticky = None
@@ -383,11 +383,11 @@ class Repository(Implicit, Persistent):
                 )
 
         # Make sure that labels and branch ids do not collide.
-        if self._branches.has_key(label) or label == 'mainline':
+        if label in self._branches or label == 'mainline':
             raise VersionControlError(
                 'The label value given is already in use as an activity id.'
                 )
-        if not self._labels.has_key(label):
+        if not label in self._labels:
             self._labels[label] = 1
 
         history = self.getVersionHistory(info.history_id)
@@ -409,17 +409,17 @@ class Repository(Implicit, Persistent):
         branch_id = branch_id or None
 
         # Make sure that activity ids and labels do not collide.
-        if self._labels.has_key(branch_id) or branch_id == 'mainline':
+        if branch_id in self._labels or branch_id == 'mainline':
             raise VersionControlError(
                 'The value given is already in use as a version label.'
                 )
 
-        if not self._branches.has_key(branch_id):
+        if not branch_id in self._branches:
             self._branches[branch_id] = 1
 
         history = self.getVersionHistory(info.history_id)
 
-        if history._branches.has_key(branch_id):
+        if branch_id in history._branches:
             raise VersionControlError(
                 'The resource is already associated with the given activity.'
                 )
@@ -439,11 +439,11 @@ class Repository(Implicit, Persistent):
                 version = history.getVersionById(selector)
                 sticky = ('V', selector)
 
-            elif self._labels.has_key(selector):
+            elif selector in self._labels:
                 version = history.getVersionByLabel(selector)
                 sticky = ('L', selector)
 
-            elif self._branches.has_key(selector):
+            elif selector in self._branches:
                 version = history.getLatestVersion(selector)
                 sticky = ('B', selector)
             else:

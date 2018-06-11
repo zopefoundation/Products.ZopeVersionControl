@@ -40,10 +40,7 @@ def common_setUp(self):
     from ZODB._compat import PY3
     from ZODB.DemoStorage import DemoStorage
 
-    if PY3:
-        from io import cStringIO
-    else:
-        from cStringIO import StringIO as cStringIO
+    from six import StringIO
 
     s = DemoStorage()
     self.connection = DB( s ).open()
@@ -52,7 +49,7 @@ def common_setUp(self):
         a = Application()
         r['Application'] = a
         self.root = a
-        responseOut = self.responseOut = cStringIO()
+        responseOut = self.responseOut = StringIO()
         self.app = makerequest( self.root, stdout=responseOut )
         self.app.acl_users.userFolderAddUser('UnitTester', '123', (), ())
         manage_addFolder(self.app, 'folder1')
