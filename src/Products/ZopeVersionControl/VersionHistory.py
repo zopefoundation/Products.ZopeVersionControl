@@ -86,7 +86,7 @@ class VersionHistory(Implicit, Persistent):
     def createBranch(self, branch_id, version_id):
         """Create a new branch associated with the given branch_id. The
            new branch is rooted at the version named by version_id."""
-        if self._branches.has_key(branch_id):
+        if branch_id in self._branches:
             raise VersionControlError(
                 'Activity already exists: %s' % branch_id
                 )
@@ -134,7 +134,7 @@ class VersionHistory(Implicit, Persistent):
     security.declarePrivate('hasVersionId')
     def hasVersionId(self, version_id):
         """Return true if history contains a version with the given id."""
-        return self._versions.has_key(version_id)
+        return version_id in self._versions
 
     security.declarePrivate('isLatestVersion')
     def isLatestVersion(self, version_id, branch_id):
