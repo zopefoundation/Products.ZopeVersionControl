@@ -325,23 +325,24 @@ class Repository(Implicit, Persistent):
             # If the selector is non-null, we find the version specified
             # and update the sticky tag. Later we'll check the version we
             # found and decide whether we really need to update the object.
-            if history.hasVersionId(selector):
+            if type(selector) is str and history.hasVersionId(selector):
                 version = history.getVersionById(selector)
                 sticky = ('V', selector)
 
-            elif selector in self._labels:
+            elif type(selector) is str and selector in self._labels:
                 version = history.getVersionByLabel(selector)
                 sticky = ('L', selector)
 
-            elif selector in self._branches:
+            elif type(selector) is str and selector in self._branches:
                 version = history.getLatestVersion(selector)
                 if selector == 'mainline':
                     sticky = None
                 else:
                     sticky = ('B', selector)
             else:
-                try:    date = DateTime(selector)
-                except:
+                try:
+                    date = DateTime(selector)
+                except Exception:
                     raise VersionControlError(
                         'Invalid version selector: %s' % selector
                         )
