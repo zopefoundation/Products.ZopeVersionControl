@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = '1.1.4dev'
+__version__ = '1.1.4.dev0'
 
 setup(
     name='Products.ZopeVersionControl',
