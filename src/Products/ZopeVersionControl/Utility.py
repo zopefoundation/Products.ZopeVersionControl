@@ -128,35 +128,31 @@ def _findModificationTime(object):
     latest = mtime
     conn = object._p_jar
     load = conn._storage.load
-    try:
-        version = conn._version
-    except AttributeError:
-        # ZODB 3.9+ compatibility
-        version = None
     refs = referencesf
 
-    oids=[object._p_oid]
-    done_oids={}
-    done=lambda x: x in done_oids
+    oids = [object._p_oid]
+    done_oids = set()
+    done = done_oids.__contains__
     first = 1
 
     while oids:
-        oid=oids[0]
+        oid = oids[0]
         del oids[0]
         if done(oid):
             continue
-        done_oids[oid]=1
-        try: p, serial = load(oid, version)
-        except: pass # invalid reference!
+        done_oids.add(oid)
+        try:
+            p, serial = load(oid)
+        except Exception:
+            pass  # invalid reference!
         else:
             if first is not None:
                 first = None
             else:
-                if p.find('U\x0b__vc_info__') == -1:
+                if p.find(b'U\x0b__vc_info__') == -1:
                     mtime = TimeStamp(serial).timeTime()
                     if mtime > latest:
                         latest = mtime
             refs(p, oids)
 
     return latest
-
