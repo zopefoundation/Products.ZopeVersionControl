@@ -6,6 +6,7 @@ lib
 include
 man
 parts
+*.egg-info/
 
 __pycache__
 .*
@@ -13,3 +14,7 @@ __pycache__
 *.pyc
 *.pyo
 *.so
+
+coverage.xml
+htmlcov/
+eggs/
