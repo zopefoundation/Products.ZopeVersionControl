@@ -11,10 +11,12 @@
 #
 ##############################################################################
 
+from . import VersionHistory
 from App.class_init import default__class_init__ as InitializeClass
 from App.special_dtml import DTMLFile
-import OFS, AccessControl
-import VersionHistory
+
+import AccessControl
+import OFS
 
 # BBB Zope 2.12
 try:
@@ -73,7 +75,7 @@ class ZopeVersionHistory(
         activity = self._branches.get(name)
         if activity is not None:
             return activity.__of__(self)
-        raise KeyError, name
+        raise KeyError(name)
 
     security.declarePrivate('objectIds')
     def objectIds(self, spec=None):

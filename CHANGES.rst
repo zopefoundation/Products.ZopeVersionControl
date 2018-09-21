@@ -6,6 +6,12 @@ Changelog
 
 - Zope trunk compatibility for product init.
 
+- Fix _findModificationTime for ZODB 5
+  [davisagli]
+
+- Add Support for Python 3
+  [rudaporto, pbauer, icemac, davisagli]
+
 1.1.3 - 2010-10-02
 ------------------
 

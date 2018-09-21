@@ -13,20 +13,16 @@
 
 __version__='$Revision: 1.11 $'[11:-2]
 
-import tempfile
 import time
-from cStringIO import StringIO
-from cPickle import Pickler, Unpickler
 
-from Acquisition import Implicit, aq_parent, aq_inner, aq_base
+from Acquisition import Implicit, aq_base
 from App.class_init import default__class_init__ as InitializeClass
 from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
-from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
-
-from Utility import VersionControlError
-from nonversioned import listNonVersionedObjects, removeNonVersionedData
+from ZODB._compat import BytesIO
+from ZODB._compat import Pickler, Unpickler
+from .nonversioned import listNonVersionedObjects, removeNonVersionedData
 
 
 def cloneByPickle(obj, ignore_list=()):
@@ -40,7 +36,7 @@ def cloneByPickle(obj, ignore_list=()):
         ignore_dict[id(o)] = o
 
     def persistent_id(ob, ignore_dict=ignore_dict):
-        if ignore_dict.has_key(id(ob)):
+        if id(ob) in ignore_dict:
             return 'ignored'
         if getattr(ob, '_p_changed', 0) is None:
             ob._p_changed = 0
@@ -54,7 +50,7 @@ def cloneByPickle(obj, ignore_list=()):
         placeholder.id = "ignored_subobject"
         return placeholder
 
-    stream = StringIO()
+    stream = BytesIO()
     p = Pickler(stream, 1)
     p.persistent_id = persistent_id
     p.dump(obj)

@@ -11,9 +11,10 @@
 #
 ##############################################################################
 
-import ZopeRepository
+from . import ZopeRepository
 from App.class_init import default__class_init__ as InitializeClass
 from App.ImageFile import ImageFile
+
 
 def initialize(context):
 
@@ -35,7 +36,7 @@ def initialize(context):
 def install_hack():
     # Hackery - don't try this at home, kids. :) This is temporary for
     # testing purposes only.
-    from VersionSupport import VersionSupport
+    from .VersionSupport import VersionSupport
     import OFS.SimpleItem, App.Management
 
     method = App.Management.Tabs.filtered_manage_options

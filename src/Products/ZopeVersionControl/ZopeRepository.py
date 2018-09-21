@@ -11,12 +11,13 @@
 #
 ##############################################################################
 
+from . import Repository
+from .SequenceWrapper import SequenceWrapper
 from App.class_init import default__class_init__ as InitializeClass
 from App.special_dtml import DTMLFile
-from SequenceWrapper import SequenceWrapper
+
 import AccessControl
 import OFS
-import Repository
 
 # BBB Zope 2.12
 try:
@@ -77,7 +78,7 @@ class ZopeRepository(
         history = self._histories.get(name)
         if history is not None:
             return history.__of__(self)
-        raise KeyError, name
+        raise KeyError(name)
 
     security.declarePrivate('objectIds')
     def objectIds(self, spec=None):

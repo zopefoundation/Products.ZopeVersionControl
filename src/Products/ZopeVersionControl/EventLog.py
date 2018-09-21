@@ -11,11 +11,12 @@
 #
 ##############################################################################
 
+from .Utility import _findUserId
 from App.class_init import default__class_init__ as InitializeClass
-from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 from BTrees.IOBTree import IOBTree
-from Utility import _findUserId
+from Persistence import Persistent
+
 import time
 
 MAX32 = int(2**31 - 1)

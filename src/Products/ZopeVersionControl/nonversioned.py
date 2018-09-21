@@ -15,13 +15,11 @@
 $Id$
 """
 
+from .interfaces import INonVersionedData
+from .VersionSupport import isAVersionableResource
 from Acquisition import aq_base
 from OFS.ObjectManager import ObjectManager
-
-from interfaces import INonVersionedData
-from VersionSupport import isAVersionableResource
-from zope.interface import implements
-
+from zope.interface import implementer
 
 try:
     # Optional support for references.
@@ -69,10 +67,10 @@ def restoreNonVersionedData(obj, dict):
 
 
 
+@implementer(INonVersionedData)
 class StandardNonVersionedDataAdapter:
     """Non-versioned data adapter for arbitrary things.
     """
-    implements(INonVersionedData)
 
     def __init__(self, obj):
         self.obj = obj
@@ -101,14 +99,14 @@ class StandardNonVersionedDataAdapter:
 
     def restoreNonVersionedData(self, data):
         for attr in self.attrs:
-            if data.has_key(attr):
+            if attr in data:
                 setattr(aq_base(self.obj), attr, data[attr])
 
 
+@implementer(INonVersionedData)
 class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
     """Non-versioned data adapter for object managers.
     """
-    implements(INonVersionedData)
 
     def listNonVersionedObjects(self):
         contents = self.getNonVersionedData()['contents']
@@ -124,7 +122,7 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
             removed[name] = 1
         if obj._objects:
             obj._objects = tuple([info for info in obj._objects
-                                  if not removed.has_key(info['id'])])
+                                  if info['id'] not in removed])
 
     def getNonVersionedData(self):
         contents = {}
@@ -154,7 +152,7 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
             ignore[name] = 1
         # Restore the items of the container.
         for name, value in data['contents'].items():
-            if not ignore.has_key(name):
+            if name not in ignore:
                 obj._setOb(name, aq_base(value))
                 if not hasattr(obj, '_tree'):
                     # Avoid generating events, since nothing was ever really
