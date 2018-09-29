@@ -74,3 +74,8 @@ def registerIcon(filename):
     setattr(info, filename,
             ImageFile('www/%s' % filename, globals())
             )
+
+
+zodbupdate_decode_dict = {
+    'Products.ZopeVersionControl.EventLog LogEntry message': 'binary',
+}

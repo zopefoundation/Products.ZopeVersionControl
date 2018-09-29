@@ -36,4 +36,9 @@ setup(
         'ZODB',
         'Zope2',
     ],
+    entry_points={
+        'zodbupdate.decode': [
+            'decodes = Products.ZopeVersionControl:zodbupdate_decode_dict',
+        ],
+    },
 )

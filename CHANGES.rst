@@ -12,6 +12,9 @@ Changelog
 - Add Support for Python 3
   [rudaporto, pbauer, icemac, davisagli]
 
+- Add decode mapping for zodbupdate migration to Python 3.
+
+
 1.1.3 - 2010-10-02
 ------------------
 
