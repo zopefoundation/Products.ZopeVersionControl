@@ -20,7 +20,7 @@ setup(
     license='ZPL',
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
-    url='https://pypi.python.org/pypi/Products.ZopeVersionControl',
+    url='https://pypi.org/project/Products.ZopeVersionControl',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     namespace_packages=['Products'],
