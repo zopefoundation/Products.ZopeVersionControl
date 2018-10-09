@@ -12,7 +12,7 @@
 ##############################################################################
 
 from . import ZopeRepository
-from App.class_init import default__class_init__ as InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.ImageFile import ImageFile
 
 

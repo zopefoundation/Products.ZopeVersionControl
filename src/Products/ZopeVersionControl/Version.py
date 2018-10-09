@@ -16,7 +16,7 @@ __version__='$Revision: 1.11 $'[11:-2]
 import time
 
 from Acquisition import Implicit, aq_base
-from App.class_init import default__class_init__ as InitializeClass
+from AccessControl.class_init import InitializeClass
 from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
