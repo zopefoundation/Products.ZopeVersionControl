@@ -34,20 +34,20 @@ class VersionControlTests(unittest.TestCase):
         repository = self.repository
         document = self.document1
         nonversionable = self.document_nonversion
-        self.failUnless(repository.isAVersionableResource(document))
-        self.failIf(repository.isAVersionableResource(nonversionable))
-        self.failIf(repository.isAVersionableResource('foobar'))
-        self.failIf(repository.isAVersionableResource(self))
+        self.assertTrue(repository.isAVersionableResource(document))
+        self.assertFalse(repository.isAVersionableResource(nonversionable))
+        self.assertFalse(repository.isAVersionableResource('foobar'))
+        self.assertFalse(repository.isAVersionableResource(self))
 
 
     def testIsUnderVersionControl(self):
         # Test checking whether an object is under version control.
         repository = self.repository
         document = self.document1
-        self.failIf(repository.isUnderVersionControl(document))
+        self.assertFalse(repository.isUnderVersionControl(document))
         repository.applyVersionControl(document)
         self.commit()
-        self.failUnless(repository.isUnderVersionControl(document))
+        self.assertTrue(repository.isUnderVersionControl(document))
 
 
     def testIsResourceUpToDate(self):
@@ -55,7 +55,7 @@ class VersionControlTests(unittest.TestCase):
         repository = self.repository
         document = repository.applyVersionControl(self.document1)
         self.commit()
-        self.failUnless(repository.isResourceUpToDate(document))
+        self.assertTrue(repository.isResourceUpToDate(document))
 
         info = repository.getVersionInfo(document)
         first_version = info.version_id
@@ -67,11 +67,11 @@ class VersionControlTests(unittest.TestCase):
 
         document = repository.updateResource(document, first_version)
         self.commit()
-        self.failIf(repository.isResourceUpToDate(document))
+        self.assertFalse(repository.isResourceUpToDate(document))
 
         document = repository.updateResource(document, None)
         self.commit()
-        self.failUnless(repository.isResourceUpToDate(document))
+        self.assertTrue(repository.isResourceUpToDate(document))
 
 
     def testIsResourceChanged(self):
@@ -80,22 +80,22 @@ class VersionControlTests(unittest.TestCase):
         document = repository.applyVersionControl(self.document1)
         self.commit()
         if self.do_commits:
-            self.failIf(repository.isResourceChanged(document))
+            self.assertFalse(repository.isResourceChanged(document))
 
         document = repository.checkoutResource(document)
         self.commit()
         if self.do_commits:
-            self.failIf(repository.isResourceChanged(document))
+            self.assertFalse(repository.isResourceChanged(document))
 
         document.manage_edit('change 1', '')
         self.commit()
         if self.do_commits:
-            self.failUnless(repository.isResourceChanged(document))
+            self.assertTrue(repository.isResourceChanged(document))
 
         document = repository.checkinResource(document, '')
         self.commit()
         if self.do_commits:
-            self.failIf(repository.isResourceChanged(document))
+            self.assertFalse(repository.isResourceChanged(document))
 
 
     def testVersionBookkeeping(self):
@@ -106,26 +106,26 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         info = repository.getVersionInfo(document)
-        self.failUnless(info.user_id == 'UnitTester')
-        self.failUnless(info.status == info.CHECKED_IN)
-        self.failUnless(info.sticky == None)
+        self.assertTrue(info.user_id == 'UnitTester')
+        self.assertTrue(info.status == info.CHECKED_IN)
+        self.assertTrue(info.sticky == None)
         first_version = info.version_id
 
         document = repository.checkoutResource(document)
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.status == info.CHECKED_OUT)
+        self.assertTrue(info.status == info.CHECKED_OUT)
 
         document = repository.checkinResource(document, '')
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.status == info.CHECKED_IN)
+        self.assertTrue(info.status == info.CHECKED_IN)
 
         document = repository.updateResource(document, first_version)
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.status == info.CHECKED_IN)
-        self.failUnless(info.version_id == first_version)
+        self.assertTrue(info.status == info.CHECKED_IN)
+        self.assertTrue(info.version_id == first_version)
 
         branch_name = 'Bug Fix Branch'
         repository.makeActivity(document, branch_name)
@@ -133,17 +133,17 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, branch_name)
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.sticky == ('B', branch_name))
+        self.assertTrue(info.sticky == ('B', branch_name))
 
         document = repository.updateResource(document, 'mainline')
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.sticky == None)
+        self.assertTrue(info.sticky == None)
 
         document = repository.checkoutResource(document)
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.status == info.CHECKED_OUT)
+        self.assertTrue(info.status == info.CHECKED_OUT)
 
         document.manage_edit('change 1', '')
         self.commit()
@@ -151,7 +151,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.uncheckoutResource(document)
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.status == info.CHECKED_IN)
+        self.assertTrue(info.status == info.CHECKED_IN)
 
 
     def testApplyVersionControl(self):
@@ -161,10 +161,10 @@ class VersionControlTests(unittest.TestCase):
 
         document = repository.applyVersionControl(self.document1)
         self.commit()
-        self.failUnless(repository.isUnderVersionControl(document))
+        self.assertTrue(repository.isUnderVersionControl(document))
 
         # Make sure we can't do it a second time.
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.applyVersionControl,
                               document
                               )
@@ -173,10 +173,10 @@ class VersionControlTests(unittest.TestCase):
 
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
-        self.failUnless(record.version_id == info.version_id)
-        self.failUnless(record.user_id == 'UnitTester')
-        self.failUnless(record.action == record.ACTION_CHECKIN)
-        self.failUnless(record.path == '/folder1/folder2/document1')
+        self.assertTrue(record.version_id == info.version_id)
+        self.assertTrue(record.user_id == 'UnitTester')
+        self.assertTrue(record.action == record.ACTION_CHECKIN)
+        self.assertTrue(record.path == '/folder1/folder2/document1')
 
 
     def testCheckoutResource(self):
@@ -194,17 +194,17 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         # Make sure you can't checkout a checked-out resource.
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.checkoutResource,
                               document
                               )
 
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
-        self.failUnless(record.version_id == first_version)
-        self.failUnless(record.user_id == 'UnitTester')
-        self.failUnless(record.action == record.ACTION_CHECKOUT)
-        self.failUnless(record.path == '/folder1/folder2/document1')
+        self.assertTrue(record.version_id == first_version)
+        self.assertTrue(record.user_id == 'UnitTester')
+        self.assertTrue(record.action == record.ACTION_CHECKOUT)
+        self.assertTrue(record.path == '/folder1/folder2/document1')
 
         document = repository.checkinResource(document, '')
         self.commit()
@@ -212,17 +212,17 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         # Make sure you can't checkout a non-up-to-date resource.
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.checkoutResource,
                               document
                               )
 
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
-        self.failUnless(record.version_id == first_version)
-        self.failUnless(record.user_id == 'UnitTester')
-        self.failUnless(record.action == record.ACTION_UPDATE)
-        self.failUnless(record.path == '/folder1/folder2/document1')
+        self.assertTrue(record.version_id == first_version)
+        self.assertTrue(record.user_id == 'UnitTester')
+        self.assertTrue(record.action == record.ACTION_UPDATE)
+        self.assertTrue(record.path == '/folder1/folder2/document1')
 
 
     def testCheckinResource(self):
@@ -234,7 +234,7 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         # Make sure you can't checkin a checked-in resource.
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.checkinResource,
                               document, ''
                               )
@@ -251,12 +251,12 @@ class VersionControlTests(unittest.TestCase):
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
         info = repository.getVersionInfo(document)
-        self.failUnless(record.version_id == info.version_id)
-        self.failUnless(record.user_id == 'UnitTester')
-        self.failUnless(record.action == record.ACTION_CHECKIN)
-        self.failUnless(record.path == '/folder1/folder2/document1')
+        self.assertTrue(record.version_id == info.version_id)
+        self.assertTrue(record.user_id == 'UnitTester')
+        self.assertTrue(record.action == record.ACTION_CHECKIN)
+        self.assertTrue(record.path == '/folder1/folder2/document1')
 
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.checkinResource,
                               document, ''
                               )
@@ -264,7 +264,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, first_version)
         self.commit()
 
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.checkinResource,
                               document, ''
                               )
@@ -290,14 +290,14 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         info = repository.getVersionInfo(document)
-        self.failUnless(info.status == info.CHECKED_IN)
+        self.assertTrue(info.status == info.CHECKED_IN)
 
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
-        self.failUnless(record.version_id == first_version)
-        self.failUnless(record.user_id == 'UnitTester')
-        self.failUnless(record.action == record.ACTION_UNCHECKOUT)
-        self.failUnless(record.path == '/folder1/folder2/document1')
+        self.assertTrue(record.version_id == first_version)
+        self.assertTrue(record.user_id == 'UnitTester')
+        self.assertTrue(record.action == record.ACTION_UNCHECKOUT)
+        self.assertTrue(record.path == '/folder1/folder2/document1')
 
 
     def testUpdateResource(self):
@@ -322,7 +322,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, first_version)
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.version_id == first_version)
+        self.assertTrue(info.version_id == first_version)
 
         document = repository.updateResource(document, None)
         self.commit()
@@ -330,14 +330,14 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, 'First Version')
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.version_id == first_version)
+        self.assertTrue(info.version_id == first_version)
 
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
-        self.failUnless(record.version_id == first_version)
-        self.failUnless(record.user_id == 'UnitTester')
-        self.failUnless(record.action == record.ACTION_UPDATE)
-        self.failUnless(record.path == '/folder1/folder2/document1')
+        self.assertTrue(record.version_id == first_version)
+        self.assertTrue(record.user_id == 'UnitTester')
+        self.assertTrue(record.action == record.ACTION_UPDATE)
+        self.assertTrue(record.path == '/folder1/folder2/document1')
 
 
     def testLabelResource(self):
@@ -356,7 +356,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.checkoutResource(document)
         self.commit()
 
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.labelResource,
                               document, 'First Version', 1
                               )
@@ -366,12 +366,12 @@ class VersionControlTests(unittest.TestCase):
 
         repository.makeActivity(document, 'Activity 1')
 
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.labelResource,
                               document, 'mainline', 1
                               )
 
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.labelResource,
                               document, 'Activity 1', 1
                               )
@@ -382,7 +382,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.checkinResource(document, '')
         self.commit()
 
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.labelResource,
                               document, 'First Version', 0
                               )
@@ -390,7 +390,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, 'First Version')
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.version_id == first_version)
+        self.assertTrue(info.version_id == first_version)
 
 
     def testActivityAPI(self):
@@ -402,13 +402,13 @@ class VersionControlTests(unittest.TestCase):
         repository.applyVersionControl(document)
         self.commit()
 
-        self.failUnless(repository.isUnderVersionControl(document))
-        self.failUnless(repository.isResourceUpToDate(document))
+        self.assertTrue(repository.isUnderVersionControl(document))
+        self.assertTrue(repository.isResourceUpToDate(document))
         if self.do_commits:
-            self.failIf(repository.isResourceChanged(document))
+            self.assertFalse(repository.isResourceChanged(document))
 
         info = repository.getVersionInfo(document)
-        self.failUnless(info.sticky == None)
+        self.assertTrue(info.sticky == None)
         first_version = info.version_id
 
         activity_name = 'My Big Project'
@@ -417,7 +417,7 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         # Make sure we can't do it again for the same activity id.
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.makeActivity,
                               document, activity_name
                               )
@@ -425,13 +425,13 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, activity_name)
         self.commit()
 
-        self.failUnless(repository.isResourceUpToDate(document))
+        self.assertTrue(repository.isResourceUpToDate(document))
         if self.do_commits:
-            self.failIf(repository.isResourceChanged(document))
+            self.assertFalse(repository.isResourceChanged(document))
 
         info = repository.getVersionInfo(document)
-        self.failUnless(info.version_id == first_version)
-        self.failUnless(info.sticky == ('B', activity_name))
+        self.assertTrue(info.version_id == first_version)
+        self.assertTrue(info.sticky == ('B', activity_name))
 
         repository.checkoutResource(document)
         self.commit()
@@ -443,7 +443,7 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         info = repository.getVersionInfo(document)
-        self.failUnless(info.sticky == ('B', activity_name))
+        self.assertTrue(info.sticky == ('B', activity_name))
 
         for n in range(10):
             activity_name = 'Activity %d' % n
@@ -457,11 +457,11 @@ class VersionControlTests(unittest.TestCase):
             document = repository.updateResource(document, activity_name)
             self.commit()
 
-            self.failUnless(repository.isResourceUpToDate(document))
+            self.assertTrue(repository.isResourceUpToDate(document))
 
             info = repository.getVersionInfo(document)
-            self.failUnless(info.sticky == ('B', activity_name))
-            self.failUnless(info.version_id == root_version)
+            self.assertTrue(info.sticky == ('B', activity_name))
+            self.assertTrue(info.version_id == root_version)
 
             repository.checkoutResource(document)
             self.commit()
@@ -475,18 +475,18 @@ class VersionControlTests(unittest.TestCase):
             self.commit()
 
             info = repository.getVersionInfo(document)
-            self.failUnless(info.sticky == ('B', activity_name))
-            self.failIf(info.version_id == root_version)
+            self.assertTrue(info.sticky == ('B', activity_name))
+            self.assertFalse(info.version_id == root_version)
 
         document = repository.updateResource(document, root_version)
         self.commit()
 
-        self.failIf(repository.isResourceUpToDate(document))
+        self.assertFalse(repository.isResourceUpToDate(document))
 
         document = repository.updateResource(document, first_version)
         self.commit()
 
-#        self.failUnless(repository.isResourceUpToDate(document))
+#        self.assertTrue(repository.isResourceUpToDate(document))
 
 
 
@@ -546,7 +546,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, target_time)
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.version_id == first_version)
+        self.assertTrue(info.version_id == first_version)
 
         # Now do some branching and make sure we backtrack correctly
         # through the branch lineage when doing date selection.
@@ -570,7 +570,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, target_time)
         self.commit()
         info = repository.getVersionInfo(document)
-        self.failUnless(info.version_id == first_version)
+        self.assertTrue(info.version_id == first_version)
 
 
     def testSelectionByLabel(self):
@@ -594,8 +594,8 @@ class VersionControlTests(unittest.TestCase):
         for label, version_id in label_set:
             document = repository.updateResource(document, label)
             info = repository.getVersionInfo(document)
-            self.failUnless(info.version_id == version_id)
-            self.failUnless(info.sticky == ('L', label))
+            self.assertTrue(info.version_id == version_id)
+            self.assertTrue(info.sticky == ('L', label))
 
         # Ensure that label moving works as expected and that we get an
         # error if we try to reuse a label without forcing a label move.
@@ -603,9 +603,9 @@ class VersionControlTests(unittest.TestCase):
         repository.labelResource(document, 'change 1', force=1)
         document = repository.updateResource(document, 'change 1')
         info = repository.getVersionInfo(document)
-        self.failUnless(info.version_id == label_set[0][1])
+        self.assertTrue(info.version_id == label_set[0][1])
 
-        self.failUnlessRaises(VersionControlError,
+        self.assertRaises(VersionControlError,
                               repository.labelResource,
                               document, 'change 3'
                               )
@@ -636,19 +636,19 @@ class VersionControlTests(unittest.TestCase):
             info.history_id, first_version
             )
         info = repository.getVersionInfo(doc_copy)
-        self.failUnless(info.version_id == first_version)
-        self.failUnless(info.sticky == ('V', first_version))
-        self.failUnless(document._p_oid != doc_copy._p_oid)
-        self.failUnless(document is not doc_copy)
+        self.assertTrue(info.version_id == first_version)
+        self.assertTrue(info.sticky == ('V', first_version))
+        self.assertTrue(document._p_oid != doc_copy._p_oid)
+        self.assertTrue(document is not doc_copy)
 
         doc_copy = repository.getVersionOfResource(
             info.history_id, "First Version"
             )
         info = repository.getVersionInfo(doc_copy)
-        self.failUnless(info.version_id == first_version)
-        self.failUnless(info.sticky == ('L', 'First Version'))
-        self.failUnless(document._p_oid != doc_copy._p_oid)
-        self.failUnless(document is not doc_copy)
+        self.assertTrue(info.version_id == first_version)
+        self.assertTrue(info.sticky == ('L', 'First Version'))
+        self.assertTrue(document._p_oid != doc_copy._p_oid)
+        self.assertTrue(document is not doc_copy)
 
 
     def testDetectPersistentSubObjectChange(self):
@@ -665,7 +665,7 @@ class VersionControlTests(unittest.TestCase):
         document1.manage_edit('spam spam', '')
         get_transaction().commit()
 
-        self.failUnless(repository.isResourceChanged(folder2))
+        self.assertTrue(repository.isResourceChanged(folder2))
 
 
     def testContainerVersioning(self):

@@ -19,7 +19,7 @@ from .Utility import use_vc_permission, _findPath
 from .ZopeVersionHistory import ZopeVersionHistory
 from AccessControl import ClassSecurityInfo
 from Acquisition import Implicit, aq_parent, aq_inner
-from App.class_init import default__class_init__ as InitializeClass
+from AccessControl.class_init import InitializeClass
 from BTrees.OIBTree import OIBTree
 from BTrees.OOBTree import OOBTree
 from DateTime.DateTime import DateTime

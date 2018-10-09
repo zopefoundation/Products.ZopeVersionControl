@@ -16,7 +16,7 @@ import time
 
 from AccessControl import getSecurityManager
 from App.Common import package_home
-from App.class_init import default__class_init__ as InitializeClass
+from AccessControl.class_init import InitializeClass
 from Persistence import Persistent
 from ZODB.TimeStamp import TimeStamp
 
