@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.4 - unreleased
+1.1.4 (2018-11-07)
 ------------------
 
 - Zope trunk compatibility for product init.
