@@ -10,6 +10,7 @@ setup(
                       open('CHANGES.rst').read()),
     classifiers=[
         'Framework :: Zope2',
+        'Framework :: Zope :: 4',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
