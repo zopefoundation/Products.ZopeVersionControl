@@ -9,7 +9,7 @@ setup(
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
     classifiers=[
-        'Framework :: Zope2',
+        'Framework :: Zope :: 2',
         'Framework :: Zope :: 4',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
