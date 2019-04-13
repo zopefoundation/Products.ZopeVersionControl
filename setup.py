@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = '1.1.5.dev0'
+__version__ = '2.0.dev0'
 
 setup(
     name='Products.ZopeVersionControl',
@@ -13,7 +13,6 @@ setup(
         'Framework :: Zope :: 4',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
