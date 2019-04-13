@@ -1,12 +1,12 @@
 Changelog
 =========
 
-1.1.5 (unreleased)
+2.0 (unreleased)
 ------------------
 
 Breaking changes:
 
-- *add item here*
+- Drop support for Python 3.4.
 
 New features:
 
