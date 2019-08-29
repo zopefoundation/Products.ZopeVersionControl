@@ -9,8 +9,10 @@ setup(
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
     classifiers=[
+        'Development Status :: 6 - Mature',
         'Framework :: Zope :: 2',
         'Framework :: Zope :: 4',
+        'License :: OSI Approved :: Zope Public License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
@@ -18,10 +20,11 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
+    keywords='version control',
     license='ZPL',
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
-    url='https://pypi.org/project/Products.ZopeVersionControl',
+    url='https://pypi.org/project/Products.ZopeVersionControl/',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     namespace_packages=['Products'],
