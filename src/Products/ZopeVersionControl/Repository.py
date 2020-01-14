@@ -100,7 +100,11 @@ class Repository(Implicit, Persistent):
 
     security.declarePublic('isUnderVersionControl')
     def isUnderVersionControl(self, object):
-        return hasattr(object, '__vc_info__')
+        info = getattr(object, '__vc_info__', None)
+        if info is None:
+            return False
+        return info.history_id in self._histories and \
+               self._histories[info.history_id].hasVersionId(info.version_id)
 
     security.declarePublic('isResourceUpToDate')
     def isResourceUpToDate(self, object, require_branch=0):
