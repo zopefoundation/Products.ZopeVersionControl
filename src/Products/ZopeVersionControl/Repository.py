@@ -76,7 +76,7 @@ class Repository(Implicit, Persistent):
         if obj.__class__ is not new_state.__class__:
             raise VersionControlError(
                 "The class of the versioned object has changed. %s != %s"
-                % (repr(obj.__class__, new_state.__class__)))
+                % (repr(obj.__class__), repr(new_state.__class__)))
         obj._p_changed = 1
         for key in list(obj.__dict__.keys()):
             if not key in new_state.__dict__:
