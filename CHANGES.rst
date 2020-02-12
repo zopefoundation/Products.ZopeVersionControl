@@ -14,6 +14,8 @@ New features:
 
 Bug fixes:
 
+- Added compatibility with Zope 5 by not registering for the help system.
+
 - Fix for retaining order of ordered folders upon cloning.
 
 - Fix for data error encountered when dealing with data imported by ZEXP import/export from another system.

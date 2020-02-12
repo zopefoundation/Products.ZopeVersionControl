@@ -26,9 +26,6 @@ def initialize(context):
         icon           = 'www/Repository.gif'
       )
 
-    context.registerHelp()
-    context.registerHelpTitle('Zope Help')
-
     registerIcon('VersionHistory.gif')
     registerIcon('Version.gif')
 
