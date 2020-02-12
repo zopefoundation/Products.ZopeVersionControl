@@ -138,7 +138,10 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
                     # subobjects that are references.
                     continue
             contents[name] = aq_base(value)
-        return {'contents': contents, 'attributes': attributes}
+        order = []
+        if getattr(self.obj, '_objects', False):
+            order = [x['id'] for x in self.obj._objects]
+        return {'contents': contents, 'attributes': attributes, 'order': order}
 
     def restoreNonVersionedData(self, data):
         StandardNonVersionedDataAdapter.restoreNonVersionedData(
@@ -163,3 +166,18 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
                 # a BTreeFolder2, which doesn't need or want the
                 # _objects attribute.
                 # XXX This is a hackish way to check for BTreeFolder2s.
+        # Yes, we're repeating ourselves:
+        if not hasattr(obj, '_tree'):
+            for id in data.get('order', []):
+                try:
+                    obj.moveObject(id, data['order'].index(id))
+                except AttributeError as e:
+                    # maybe obj doesn't support .moveObject?
+                    pass
+                except ValueError as e:
+                    # item 'id' doesn't exist in obj?
+                    pass
+                except Exception as e:
+                    # Just bail, it's not worth failing on...
+                    pass
+
