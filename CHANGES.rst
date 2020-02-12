@@ -14,7 +14,11 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix for retaining order of ordered folders upon cloning.
+
+- Fix for data error encountered when dealing with data imported by ZEXP import/export from another system.
+
+- Fix for string formatting error in ``Repository.py``.
 
 
 1.1.4 (2018-11-07)
