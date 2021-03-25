@@ -19,6 +19,7 @@ fail-under = 82
 
 [manifest]
 additional-rules = [
+    "include buildout4.cfg",
     "recursive-include src *.dtml",
     "recursive-include src *.gif",
     "recursive-include src *.stx",
