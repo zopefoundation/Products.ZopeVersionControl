@@ -6,11 +6,11 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Drop support for Zope 2.x.
 
 New features:
 
-- *add item here*
+- Add support for Python 3.9.
 
 Bug fixes:
 

@@ -10,16 +10,15 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-""" Test the ZVC machinery
-
-$Id$
-"""
+"""Test the ZVC machinery."""
 import unittest
 
-from .common import get_transaction
+import transaction
+
+from .common import common_commit
 from .common import common_setUp
 from .common import common_tearDown
-from .common import common_commit
+
 
 class VersionControlTests(unittest.TestCase):
 
@@ -39,7 +38,6 @@ class VersionControlTests(unittest.TestCase):
         self.assertFalse(repository.isAVersionableResource('foobar'))
         self.assertFalse(repository.isAVersionableResource(self))
 
-
     def testIsUnderVersionControl(self):
         # Test checking whether an object is under version control.
         repository = self.repository
@@ -48,7 +46,6 @@ class VersionControlTests(unittest.TestCase):
         repository.applyVersionControl(document)
         self.commit()
         self.assertTrue(repository.isUnderVersionControl(document))
-
 
     def testIsResourceUpToDate(self):
         # Test checking whether a versioned resource is up to date.
@@ -73,7 +70,6 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
         self.assertTrue(repository.isResourceUpToDate(document))
 
-
     def testIsResourceChanged(self):
         # Test checking whether a versioned resource has changed.
         repository = self.repository
@@ -97,7 +93,6 @@ class VersionControlTests(unittest.TestCase):
         if self.do_commits:
             self.assertFalse(repository.isResourceChanged(document))
 
-
     def testVersionBookkeeping(self):
         # Check the consistency of the version bookkeeping info.
         repository = self.repository
@@ -108,7 +103,7 @@ class VersionControlTests(unittest.TestCase):
         info = repository.getVersionInfo(document)
         self.assertTrue(info.user_id == 'UnitTester')
         self.assertTrue(info.status == info.CHECKED_IN)
-        self.assertTrue(info.sticky == None)
+        self.assertTrue(info.sticky is None)
         first_version = info.version_id
 
         document = repository.checkoutResource(document)
@@ -138,7 +133,7 @@ class VersionControlTests(unittest.TestCase):
         document = repository.updateResource(document, 'mainline')
         self.commit()
         info = repository.getVersionInfo(document)
-        self.assertTrue(info.sticky == None)
+        self.assertTrue(info.sticky is None)
 
         document = repository.checkoutResource(document)
         self.commit()
@@ -153,7 +148,6 @@ class VersionControlTests(unittest.TestCase):
         info = repository.getVersionInfo(document)
         self.assertTrue(info.status == info.CHECKED_IN)
 
-
     def testApplyVersionControl(self):
         # Test checking whether a versioned resource is up to date.
         from Products.ZopeVersionControl.Utility import VersionControlError
@@ -165,9 +159,9 @@ class VersionControlTests(unittest.TestCase):
 
         # Make sure we can't do it a second time.
         self.assertRaises(VersionControlError,
-                              repository.applyVersionControl,
-                              document
-                              )
+                          repository.applyVersionControl,
+                          document
+                          )
 
         info = repository.getVersionInfo(document)
 
@@ -177,7 +171,6 @@ class VersionControlTests(unittest.TestCase):
         self.assertTrue(record.user_id == 'UnitTester')
         self.assertTrue(record.action == record.ACTION_CHECKIN)
         self.assertTrue(record.path == '/folder1/folder2/document1')
-
 
     def testCheckoutResource(self):
         # Test checking out a version controlled resource.
@@ -195,9 +188,9 @@ class VersionControlTests(unittest.TestCase):
 
         # Make sure you can't checkout a checked-out resource.
         self.assertRaises(VersionControlError,
-                              repository.checkoutResource,
-                              document
-                              )
+                          repository.checkoutResource,
+                          document
+                          )
 
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
@@ -213,9 +206,9 @@ class VersionControlTests(unittest.TestCase):
 
         # Make sure you can't checkout a non-up-to-date resource.
         self.assertRaises(VersionControlError,
-                              repository.checkoutResource,
-                              document
-                              )
+                          repository.checkoutResource,
+                          document
+                          )
 
         # Check that the last log entry record is what we expect.
         record = repository.getLogEntries(document)[0]
@@ -223,7 +216,6 @@ class VersionControlTests(unittest.TestCase):
         self.assertTrue(record.user_id == 'UnitTester')
         self.assertTrue(record.action == record.ACTION_UPDATE)
         self.assertTrue(record.path == '/folder1/folder2/document1')
-
 
     def testCheckinResource(self):
         # Test checking in a version controlled resource.
@@ -235,9 +227,9 @@ class VersionControlTests(unittest.TestCase):
 
         # Make sure you can't checkin a checked-in resource.
         self.assertRaises(VersionControlError,
-                              repository.checkinResource,
-                              document, ''
-                              )
+                          repository.checkinResource,
+                          document, ''
+                          )
 
         info = repository.getVersionInfo(document)
         first_version = info.version_id
@@ -257,22 +249,20 @@ class VersionControlTests(unittest.TestCase):
         self.assertTrue(record.path == '/folder1/folder2/document1')
 
         self.assertRaises(VersionControlError,
-                              repository.checkinResource,
-                              document, ''
-                              )
+                          repository.checkinResource,
+                          document, ''
+                          )
 
         document = repository.updateResource(document, first_version)
         self.commit()
 
         self.assertRaises(VersionControlError,
-                              repository.checkinResource,
-                              document, ''
-                              )
-
+                          repository.checkinResource,
+                          document, ''
+                          )
 
     def testUncheckoutResource(self):
         # Test uncheckout of a version controlled resource.
-        from Products.ZopeVersionControl.Utility import VersionControlError
         repository = self.repository
 
         document = repository.applyVersionControl(self.document1)
@@ -299,10 +289,8 @@ class VersionControlTests(unittest.TestCase):
         self.assertTrue(record.action == record.ACTION_UNCHECKOUT)
         self.assertTrue(record.path == '/folder1/folder2/document1')
 
-
     def testUpdateResource(self):
         # Test updating a version controlled resource.
-        from Products.ZopeVersionControl.Utility import VersionControlError
         repository = self.repository
 
         document = repository.applyVersionControl(self.document1)
@@ -339,7 +327,6 @@ class VersionControlTests(unittest.TestCase):
         self.assertTrue(record.action == record.ACTION_UPDATE)
         self.assertTrue(record.path == '/folder1/folder2/document1')
 
-
     def testLabelResource(self):
         # Test labeling a version controlled resource.
         from Products.ZopeVersionControl.Utility import VersionControlError
@@ -357,9 +344,9 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         self.assertRaises(VersionControlError,
-                              repository.labelResource,
-                              document, 'First Version', 1
-                              )
+                          repository.labelResource,
+                          document, 'First Version', 1
+                          )
 
         document = repository.uncheckoutResource(document)
         self.commit()
@@ -367,14 +354,14 @@ class VersionControlTests(unittest.TestCase):
         repository.makeActivity(document, 'Activity 1')
 
         self.assertRaises(VersionControlError,
-                              repository.labelResource,
-                              document, 'mainline', 1
-                              )
+                          repository.labelResource,
+                          document, 'mainline', 1
+                          )
 
         self.assertRaises(VersionControlError,
-                              repository.labelResource,
-                              document, 'Activity 1', 1
-                              )
+                          repository.labelResource,
+                          document, 'Activity 1', 1
+                          )
 
         document = repository.checkoutResource(document)
         self.commit()
@@ -383,15 +370,14 @@ class VersionControlTests(unittest.TestCase):
         self.commit()
 
         self.assertRaises(VersionControlError,
-                              repository.labelResource,
-                              document, 'First Version', 0
-                              )
+                          repository.labelResource,
+                          document, 'First Version', 0
+                          )
 
         document = repository.updateResource(document, 'First Version')
         self.commit()
         info = repository.getVersionInfo(document)
         self.assertTrue(info.version_id == first_version)
-
 
     def testActivityAPI(self):
         from Products.ZopeVersionControl.Utility import VersionControlError
@@ -408,7 +394,7 @@ class VersionControlTests(unittest.TestCase):
             self.assertFalse(repository.isResourceChanged(document))
 
         info = repository.getVersionInfo(document)
-        self.assertTrue(info.sticky == None)
+        self.assertTrue(info.sticky is None)
         first_version = info.version_id
 
         activity_name = 'My Big Project'
@@ -418,9 +404,9 @@ class VersionControlTests(unittest.TestCase):
 
         # Make sure we can't do it again for the same activity id.
         self.assertRaises(VersionControlError,
-                              repository.makeActivity,
-                              document, activity_name
-                              )
+                          repository.makeActivity,
+                          document, activity_name
+                          )
 
         document = repository.updateResource(document, activity_name)
         self.commit()
@@ -471,7 +457,7 @@ class VersionControlTests(unittest.TestCase):
 
             document = repository.checkinResource(
                 document, 'activity change %d' % n
-                )
+            )
             self.commit()
 
             info = repository.getVersionInfo(document)
@@ -488,13 +474,8 @@ class VersionControlTests(unittest.TestCase):
 
 #        self.assertTrue(repository.isResourceUpToDate(document))
 
-
-
-
     def testSelectionByDate(self):
         # Test selection of versions by date.
-        from Products.ZopeVersionControl.Utility import VersionControlError
-        from DateTime.DateTime import DateTime
         import time
 
         repository = self.repository
@@ -572,7 +553,6 @@ class VersionControlTests(unittest.TestCase):
         info = repository.getVersionInfo(document)
         self.assertTrue(info.version_id == first_version)
 
-
     def testSelectionByLabel(self):
         # Test labeling and selection of versions using labels.
         from Products.ZopeVersionControl.Utility import VersionControlError
@@ -606,21 +586,18 @@ class VersionControlTests(unittest.TestCase):
         self.assertTrue(info.version_id == label_set[0][1])
 
         self.assertRaises(VersionControlError,
-                              repository.labelResource,
-                              document, 'change 3'
-                              )
-
+                          repository.labelResource,
+                          document, 'change 3'
+                          )
 
     def testGetVersionOfResource(self):
         # Test retrieving specific versions of resources.
-        from Products.ZopeVersionControl.Utility import VersionControlError
         repository = self.repository
 
         document = repository.applyVersionControl(self.document1)
         self.commit()
 
         info = repository.getVersionInfo(document)
-        history_id = info.history_id
         first_version = info.version_id
 
         repository.labelResource(document, 'First Version')
@@ -634,7 +611,7 @@ class VersionControlTests(unittest.TestCase):
         # Make sure the "get version of resource" api is working.
         doc_copy = repository.getVersionOfResource(
             info.history_id, first_version
-            )
+        )
         info = repository.getVersionInfo(doc_copy)
         self.assertTrue(info.version_id == first_version)
         self.assertTrue(info.sticky == ('V', first_version))
@@ -643,33 +620,31 @@ class VersionControlTests(unittest.TestCase):
 
         doc_copy = repository.getVersionOfResource(
             info.history_id, "First Version"
-            )
+        )
         info = repository.getVersionInfo(doc_copy)
         self.assertTrue(info.version_id == first_version)
         self.assertTrue(info.sticky == ('L', 'First Version'))
         self.assertTrue(document._p_oid != doc_copy._p_oid)
         self.assertTrue(document is not doc_copy)
 
-
     def testDetectPersistentSubObjectChange(self):
         # Test detection of changes to persistent sub-objects.
         repository = self.repository
         folder2 = self.folder2
-        document = self.document1
 
         # Place a resource w/ persistent subobjects under version control.
         repository.applyVersionControl(folder2)
-        get_transaction().commit()
+        transaction.commit()
 
         document1 = getattr(folder2, 'document1')
         document1.manage_edit('spam spam', '')
-        get_transaction().commit()
+        transaction.commit()
 
         self.assertTrue(repository.isResourceChanged(folder2))
 
-
     def testContainerVersioning(self):
         from OFS.DTMLDocument import addDTMLDocument
+
         # Verify that containers and items are versioned independently.
         repository = self.repository
         folder1 = self.app.folder1
@@ -729,13 +704,12 @@ class VersionControlTests(unittest.TestCase):
         self.assertEqual(folder1.folder2.testattr, 'item_v2')
         self.assert_(not hasattr(folder1, 'document3'))
 
-
     def testNonVersionedAttribute(self):
         # Test a non-version-controlled attribute mixed with
         # a version-controlled attribute.
         self.document1.extra_attr = 'v1'
         self.document1.__vc_ignore__ = ('__ac_local_roles__',)
-        self.document1.__ac_local_roles__ = {'sam': ['Manager',]}
+        self.document1.__ac_local_roles__ = {'sam': ['Manager', ]}
         repository = self.repository
         document = repository.applyVersionControl(self.document1)
         info = repository.getVersionInfo(document)
@@ -753,7 +727,7 @@ class VersionControlTests(unittest.TestCase):
         # that is acquired does not cause an error
         self.document1.__vc_ignore__ = ('dummy_attr',)
         self.folder1.dummy_attr = 'dummy_attr'
-        self.assertEqual( self.folder1.dummy_attr, self.document1.dummy_attr )
+        self.assertEqual(self.folder1.dummy_attr, self.document1.dummy_attr)
 
         repository = self.repository
         document = repository.applyVersionControl(self.document1)
@@ -764,17 +738,15 @@ class VersionControlTests(unittest.TestCase):
         repository.checkinResource(document)
         repository.updateResource(document, first_version)
 
+
 class VersionControlTestsWithCommits(VersionControlTests):
     """Version control test suite with transaction commits that mimic
        the transaction commits that you would get with Web based usage."""
     do_commits = 1
+
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(VersionControlTests))
     suite.addTest(unittest.makeSuite(VersionControlTestsWithCommits))
     return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
-

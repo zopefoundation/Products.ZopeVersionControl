@@ -12,16 +12,16 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Run all Zope Version Control tests
-
-$Id$"""
+"""Run all Zope Version Control tests."""
 
 import unittest
 
 from Products.ZopeVersionControl.tests import testVersionControl
 
+
 try:
     from Products import References
+    del References
 except ImportError:
     # References product is not available
     testReferenceVersioning = None
@@ -36,6 +36,3 @@ def test_suite():
     if testReferenceVersioning is not None:
         suite.addTest(testReferenceVersioning.test_suite())
     return suite
-
-if __name__ == "__main__":
-    unittest.main(defaultTest="test_suite")

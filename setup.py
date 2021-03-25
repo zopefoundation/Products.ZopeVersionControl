@@ -1,4 +1,6 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
+
 
 __version__ = '2.0.1.dev0'
 
@@ -10,8 +12,8 @@ setup(
                       open('CHANGES.rst').read()),
     classifiers=[
         'Development Status :: 6 - Mature',
-        'Framework :: Zope :: 2',
         'Framework :: Zope :: 4',
+        'Framework :: Zope :: 5',
         'License :: OSI Approved :: Zope Public License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
@@ -19,12 +21,14 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords='version control',
     license='ZPL',
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
-    url='https://pypi.org/project/Products.ZopeVersionControl/',
+    url='https://github.com/zopefoundation/Products.ZopeVersionControl',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     namespace_packages=['Products'],

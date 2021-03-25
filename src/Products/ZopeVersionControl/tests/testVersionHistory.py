@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-"""Test the VersionHistory internals.
-
-$Id$
-"""
+"""Test the VersionHistory internals."""
 import unittest
 
 from .common import common_setUp
@@ -37,6 +34,3 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(VersionHistoryTests))
     return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

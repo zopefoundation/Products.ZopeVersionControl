@@ -14,6 +14,7 @@
 
 class SequenceWrapper:
     """A helper that manages lazy acquisition wrapping."""
+
     def __init__(self, parent, items, pairs=None):
         if pairs is not None:
             self.pairs = 1
@@ -33,4 +34,3 @@ class SequenceWrapper:
 
     def __nonzero__(self):
         return len(self.items) > 0
-

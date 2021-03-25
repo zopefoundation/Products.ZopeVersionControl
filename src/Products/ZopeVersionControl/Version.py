@@ -11,18 +11,20 @@
 #
 ##############################################################################
 
-__version__='$Revision: 1.11 $'[11:-2]
-
 import time
 
-from Acquisition import Implicit, aq_base
-from AccessControl.class_init import InitializeClass
-from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
+from Acquisition import Implicit
+from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
+from Persistence import Persistent
 from ZODB._compat import BytesIO
-from ZODB._compat import Pickler, Unpickler
-from .nonversioned import listNonVersionedObjects, removeNonVersionedData
+from ZODB._compat import Pickler
+from ZODB._compat import Unpickler
+
+from .nonversioned import listNonVersionedObjects
+from .nonversioned import removeNonVersionedData
 
 
 def cloneByPickle(obj, ignore_list=()):
@@ -83,22 +85,26 @@ class Version(Implicit, Persistent):
     security = ClassSecurityInfo()
 
     security.declarePublic('getId')
+
     def getId(self):
         return self.id
 
     security.declarePrivate('saveState')
+
     def saveState(self, obj):
         """Save the state of object as the state for this version of
            a version-controlled resource."""
         self._data = self.stateCopy(obj, self)
 
     security.declarePrivate('copyState')
+
     def copyState(self):
         """Return an independent deep copy of the state of the version."""
         data = self.__dict__.get('_data')  # Avoid __of__ hooks
         return self.stateCopy(data, self)
 
     security.declarePrivate('stateCopy')
+
     def stateCopy(self, obj, container):
         """Get a deep copy of the state of an object.
 

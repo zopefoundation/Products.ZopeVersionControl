@@ -11,12 +11,13 @@
 #
 ##############################################################################
 
-from . import VersionHistory
+import AccessControl
+import OFS
 from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 
-import AccessControl
-import OFS
+from . import VersionHistory
+
 
 # BBB Zope 2.12
 try:
@@ -29,7 +30,7 @@ class ZopeVersionHistory(
     VersionHistory.VersionHistory,
     RoleManager,
     OFS.SimpleItem.Item,
-    ):
+):
     """The ZopeVersionHistory build on the core VersionHistory class to
        provide the Zope management interface and other product trappings."""
 
@@ -38,17 +39,17 @@ class ZopeVersionHistory(
 
     meta_type = 'Version History'
 
-    manage_options=(
-        ( {'label': 'Contents',    'action':'manage_main',
-           'help': ('ZopeVersionControl', 'VersionHistory-Manage.stx')},
-          {'label': 'Properties', 'action':'manage_properties_form',
-           'help': ('ZopeVersionControl', 'VersionHistory-Properties.stx')},
-        ) +
+    manage_options = (
+        ({'label': 'Contents', 'action': 'manage_main',
+          'help': ('ZopeVersionControl', 'VersionHistory-Manage.stx')},
+         {'label': 'Properties', 'action': 'manage_properties_form',
+          'help': ('ZopeVersionControl', 'VersionHistory-Properties.stx')},
+         ) +
         RoleManager.manage_options +
         OFS.SimpleItem.Item.manage_options
-        )
+    )
 
-    icon='misc_/ZopeVersionControl/VersionHistory.gif'
+    icon = 'misc_/ZopeVersionControl/VersionHistory.gif'
 
     security.declareProtected('View management screens', 'manage_main')
     manage_main = DTMLFile('dtml/VersionHistoryManageMain', globals())
@@ -57,19 +58,20 @@ class ZopeVersionHistory(
 
     security.declareProtected(
         'View management screens', 'manage_properties_form'
-        )
+    )
     manage_properties_form = DTMLFile(
         'dtml/VersionHistoryProperties', globals()
-        )
+    )
 
     security.declareProtected('Manage repositories', 'manage_edit')
+
     def manage_edit(self, REQUEST=None):
         """Change object properties."""
         if REQUEST is not None:
-            message="Saved changes."
+            message = "Saved changes."
             return self.manage_properties_form(
                 self, REQUEST, manage_tabs_message=message
-                )
+            )
 
     def __getitem__(self, name):
         activity = self._branches.get(name)
@@ -78,17 +80,19 @@ class ZopeVersionHistory(
         raise KeyError(name)
 
     security.declarePrivate('objectIds')
+
     def objectIds(self, spec=None):
         return self._branches.keys()
 
     security.declarePrivate('objectValues')
+
     def objectValues(self, spec=None):
         return self._branches.values()
 
     security.declarePrivate('objectItems')
+
     def objectItems(self, spec=None):
         return self._branches.items()
 
+
 InitializeClass(ZopeVersionHistory)
-
-

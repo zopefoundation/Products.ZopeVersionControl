@@ -19,11 +19,13 @@ import unittest
 from .common import common_setUp
 from .common import common_tearDown
 
+
 has_refs = 1
 try:
     from Products.References.PathReference import PathReference
 except ImportError:
     has_refs = 0
+
 
 class ReferenceVCTests(unittest.TestCase):
 
@@ -111,7 +113,3 @@ def test_suite():
     if has_refs:
         suite.addTest(unittest.makeSuite(ReferenceVCTests))
     return suite
-
-if __name__ == "__main__":
-    unittest.main(defaultTest='test_suite')
-
