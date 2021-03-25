@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.1 (unreleased)
+3.0.0 (unreleased)
 ------------------
 
 Breaking changes:
@@ -11,10 +11,6 @@ Breaking changes:
 New features:
 
 - Add support for Python 3.9.
-
-Bug fixes:
-
-- *add item here*
 
 
 2.0.0 (2020-03-09)

@@ -15,16 +15,10 @@ import AccessControl
 import OFS
 from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
+from OFS.role import RoleManager
 
 from . import Repository
 from .SequenceWrapper import SequenceWrapper
-
-
-# BBB Zope 2.12
-try:
-    from OFS.role import RoleManager
-except ImportError:
-    from AccessControl.Role import RoleManager
 
 
 class ZopeRepository(
@@ -65,8 +59,7 @@ class ZopeRepository(
     )
     manage_properties_form = DTMLFile('dtml/RepositoryProperties', globals())
 
-    security.declareProtected('Manage repositories', 'manage_edit')
-
+    @security.protected('Manage repositories')
     def manage_edit(self, title='', REQUEST=None):
         """Change object properties."""
         self.title = title
@@ -82,18 +75,15 @@ class ZopeRepository(
             return history.__of__(self)
         raise KeyError(name)
 
-    security.declarePrivate('objectIds')
-
+    @security.private
     def objectIds(self, spec=None):
         return SequenceWrapper(self, self._histories.keys())
 
-    security.declarePrivate('objectValues')
-
+    @security.private
     def objectValues(self, spec=None):
         return SequenceWrapper(self, self._histories.values())
 
-    security.declarePrivate('objectItems')
-
+    @security.private
     def objectItems(self, spec=None):
         return SequenceWrapper(self, self._histories.items(), 1)
 

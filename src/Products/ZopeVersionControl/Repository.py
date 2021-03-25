@@ -52,8 +52,7 @@ class Repository(Implicit, Persistent):
 
     security = ClassSecurityInfo()
 
-    security.declarePrivate('createVersionHistory')
-
+    @security.private
     def createVersionHistory(self, object):
         """Internal: create a new version history for a resource."""
         # When one creates the first version in a version history, neither
@@ -66,14 +65,12 @@ class Repository(Implicit, Persistent):
         self._histories[history_id] = history
         return history.__of__(self)
 
-    security.declarePrivate('getVersionHistory')
-
+    @security.private
     def getVersionHistory(self, history_id):
         """Internal: return a version history given a version history id."""
         return self._histories[history_id].__of__(self)
 
-    security.declarePrivate('replaceState')
-
+    @security.private
     def replaceState(self, obj, new_state):
         """Internal: replace the state of a persistent object.
         """
@@ -102,15 +99,13 @@ class Repository(Implicit, Persistent):
     # This is the implementation of the public version control interface.
     #####################################################################
 
-    security.declarePublic('isAVersionableResource')
-
+    @security.public
     def isAVersionableResource(self, obj):
         # For now, an object must be persistent (have its own db record)
         # in order to be considered a versionable resource.
         return isAVersionableResource(obj)
 
-    security.declarePublic('isUnderVersionControl')
-
+    @security.public
     def isUnderVersionControl(self, object):
         info = getattr(object, '__vc_info__', None)
         if info is None:
@@ -118,8 +113,7 @@ class Repository(Implicit, Persistent):
         return info.history_id in self._histories and \
             self._histories[info.history_id].hasVersionId(info.version_id)
 
-    security.declarePublic('isResourceUpToDate')
-
+    @security.public
     def isResourceUpToDate(self, object, require_branch=0):
         info = self.getVersionInfo(object)
         history = self.getVersionHistory(info.history_id)
@@ -134,8 +128,7 @@ class Repository(Implicit, Persistent):
                 return 0
         return history.isLatestVersion(info.version_id, branch)
 
-    security.declarePublic('isResourceChanged')
-
+    @security.public
     def isResourceChanged(self, object):
         # Return true if the state of a resource has changed in a transaction
         # *after* the version bookkeeping was saved. Note that this method is
@@ -149,8 +142,7 @@ class Repository(Implicit, Persistent):
             return 0
         return mtime > itime
 
-    security.declarePublic('getVersionInfo')
-
+    @security.public
     def getVersionInfo(self, object):
         info = getattr(object, '__vc_info__', None)
         if info is not None:
@@ -159,8 +151,7 @@ class Repository(Implicit, Persistent):
             'The specified resource is not under version control.'
         )
 
-    security.declareProtected(use_vc_permission, 'applyVersionControl')
-
+    @security.protected(use_vc_permission)
     def applyVersionControl(self, object, message=None):
         if self.isUnderVersionControl(object):
             raise VersionControlError(
@@ -203,8 +194,7 @@ class Repository(Implicit, Persistent):
                             )
         return object
 
-    security.declareProtected(use_vc_permission, 'checkoutResource')
-
+    @security.protected(use_vc_permission)
     def checkoutResource(self, object):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_IN:
@@ -239,8 +229,7 @@ class Repository(Implicit, Persistent):
         object.__vc_info__ = newinfo
         return object
 
-    security.declareProtected(use_vc_permission, 'checkinResource')
-
+    @security.protected(use_vc_permission)
     def checkinResource(self, object, message=''):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_OUT:
@@ -283,8 +272,7 @@ class Repository(Implicit, Persistent):
         object.__vc_info__ = newinfo
         return object
 
-    security.declareProtected(use_vc_permission, 'uncheckoutResource')
-
+    @security.protected(use_vc_permission)
     def uncheckoutResource(self, object):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_OUT:
@@ -314,8 +302,7 @@ class Repository(Implicit, Persistent):
         new_obj.__vc_info__ = newinfo
         return new_obj
 
-    security.declareProtected(use_vc_permission, 'updateResource')
-
+    @security.protected(use_vc_permission)
     def updateResource(self, object, selector=None):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_IN:
@@ -399,8 +386,7 @@ class Repository(Implicit, Persistent):
         new_object.__vc_info__ = newinfo
         return new_object
 
-    security.declareProtected(use_vc_permission, 'labelResource')
-
+    @security.protected(use_vc_permission)
     def labelResource(self, object, label, force=0):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_IN:
@@ -420,8 +406,7 @@ class Repository(Implicit, Persistent):
         history.labelVersion(info.version_id, label, force)
         return object
 
-    security.declareProtected(use_vc_permission, 'makeActivity')
-
+    @security.protected(use_vc_permission)
     def makeActivity(self, object, branch_id):
         # Note - this is not part of the official version control API yet.
         # It is here to allow unit testing of the architectural aspects
@@ -454,8 +439,7 @@ class Repository(Implicit, Persistent):
         history.createBranch(branch_id, info.version_id)
         return object
 
-    security.declareProtected(use_vc_permission, 'getVersionOfResource')
-
+    @security.protected(use_vc_permission)
     def getVersionOfResource(self, history_id, selector):
         history = self.getVersionHistory(history_id)
         sticky = None
@@ -494,22 +478,19 @@ class Repository(Implicit, Persistent):
         object.__vc_info__ = info
         return object
 
-    security.declareProtected(use_vc_permission, 'getVersionIds')
-
+    @security.protected(use_vc_permission)
     def getVersionIds(self, object):
         info = self.getVersionInfo(object)
         history = self.getVersionHistory(info.history_id)
         return history.getVersionIds()
 
-    security.declareProtected(use_vc_permission, 'getLabelsForResource')
-
+    @security.protected(use_vc_permission)
     def getLabelsForResource(self, object):
         info = self.getVersionInfo(object)
         history = self.getVersionHistory(info.history_id)
         return history.getLabels()
 
-    security.declareProtected(use_vc_permission, 'getLogEntries')
-
+    @security.protected(use_vc_permission)
     def getLogEntries(self, object):
         info = self.getVersionInfo(object)
         history = self.getVersionHistory(info.history_id)

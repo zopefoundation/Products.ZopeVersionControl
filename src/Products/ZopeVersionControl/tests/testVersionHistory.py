@@ -28,9 +28,3 @@ class VersionHistoryTests(unittest.TestCase):
         history = self.repository.getVersionHistory(info.history_id)
         branch = history.createBranch('foo', None)
         self.assertEqual(branch.getId(), 'foo')
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(VersionHistoryTests))
-    return suite

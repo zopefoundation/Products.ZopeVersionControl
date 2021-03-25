@@ -39,8 +39,7 @@ class VersionSupport(ExtensionClass.Base):
     security.declareProtected('View management screens', 'versionControlLog')
     versionControlLog = DTMLFile('dtml/VersionControlLog', globals())
 
-    security.declarePrivate('haveRepository')
-
+    @security.private
     def haveRepository(self):
         try:
             self.getRepository()
@@ -48,8 +47,7 @@ class VersionSupport(ExtensionClass.Base):
             return 0
         return 1
 
-    security.declarePrivate('getRepository')
-
+    @security.private
     def getRepository(self):
         # We currently only allow a single repository in a given context.
         if hasattr(self, '_v_repository'):
@@ -66,33 +64,27 @@ class VersionSupport(ExtensionClass.Base):
         self._v_repository = result
         return result
 
-    security.declarePublic('isAVersionableResource')
-
+    @security.public
     def isAVersionableResource(self, object):
         return self.getRepository().isAVersionableResource(self)
 
-    security.declarePublic('isUnderVersionControl')
-
+    @security.public
     def isUnderVersionControl(self):
         return hasattr(self, '__vc_info__')
 
-    security.declarePublic('isResourceUpToDate')
-
+    @security.public
     def isResourceUpToDate(self):
         return self.getRepository().isResourceUpToDate(self)
 
-    security.declarePublic('isResourceChanged')
-
+    @security.public
     def isResourceChanged(self):
         return self.getRepository().isResourceChanged(self)
 
-    security.declarePublic('getVersionInfo')
-
+    @security.public
     def getVersionInfo(self):
         return self.getRepository().getVersionInfo(self)
 
-    security.declareProtected(use_vc_permission, 'applyVersionControl')
-
+    @security.protected(use_vc_permission)
     def applyVersionControl(self, REQUEST=None):
         """Place a resource under version control."""
         repository = self.getRepository()
@@ -104,8 +96,7 @@ class VersionSupport(ExtensionClass.Base):
                 manage_tabs_message=message
             )
 
-    security.declareProtected(use_vc_permission, 'checkoutResource')
-
+    @security.protected(use_vc_permission)
     def checkoutResource(self, REQUEST=None):
         """Checkout a version-controlled resource."""
         repository = self.getRepository()
@@ -117,8 +108,7 @@ class VersionSupport(ExtensionClass.Base):
                 manage_tabs_message=message
             )
 
-    security.declareProtected(use_vc_permission, 'checkinResource')
-
+    @security.protected(use_vc_permission)
     def checkinResource(self, message='', REQUEST=None):
         """Checkout a version-controlled resource."""
         repository = self.getRepository()
@@ -132,8 +122,7 @@ class VersionSupport(ExtensionClass.Base):
                 manage_tabs_message=message
             )
 
-    security.declareProtected(use_vc_permission, 'uncheckoutResource')
-
+    @security.protected(use_vc_permission)
     def uncheckoutResource(self, REQUEST=None):
         """Uncheckout a version-controlled resource."""
         repository = self.getRepository()
@@ -146,8 +135,7 @@ class VersionSupport(ExtensionClass.Base):
                 manage_tabs_message=message
             )
 
-    security.declareProtected(use_vc_permission, 'updateResource')
-
+    @security.protected(use_vc_permission)
     def updateResource(self, selector, REQUEST=None):
         """Update a version-controlled resource."""
         repository = self.getRepository()
@@ -162,8 +150,7 @@ class VersionSupport(ExtensionClass.Base):
                 manage_tabs_message=message
             )
 
-    security.declareProtected(use_vc_permission, 'labelResource')
-
+    @security.protected(use_vc_permission)
     def labelResource(self, label, force=0, REQUEST=None):
         """Label a version-controlled resource."""
         repository = self.getRepository()
@@ -175,23 +162,19 @@ class VersionSupport(ExtensionClass.Base):
                 manage_tabs_message=message
             )
 
-    security.declareProtected(use_vc_permission, 'getVersionIds')
-
+    @security.protected(use_vc_permission)
     def getVersionIds(self):
         return self.getRepository().getVersionIds(self)
 
-    security.declareProtected(use_vc_permission, 'getLabelsForHistory')
-
+    @security.protected(use_vc_permission)
     def getLabelsForHistory(self):
         return self.getRepository().getLabelsForHistory(self)
 
-    security.declareProtected(use_vc_permission, 'getLabelsForVersion')
-
+    @security.protected(use_vc_permission)
     def getLabelsForVersion(self):
         return self.getRepository().getLabelsForVersion(self)
 
-    security.declareProtected(use_vc_permission, 'getLogEntries')
-
+    @security.protected(use_vc_permission)
     def getLogEntries(self):
         return self.getRepository().getLogEntries(self)
 

@@ -15,15 +15,9 @@ import AccessControl
 import OFS
 from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
+from OFS.role import RoleManager
 
 from . import Version
-
-
-# BBB Zope 2.12
-try:
-    from OFS.role import RoleManager
-except ImportError:
-    from AccessControl.Role import RoleManager
 
 
 class ZopeVersion(Version.Version, RoleManager, OFS.SimpleItem.Item):
@@ -57,8 +51,7 @@ class ZopeVersion(Version.Version, RoleManager, OFS.SimpleItem.Item):
     )
     manage_properties_form = DTMLFile('dtml/VersionProperties', globals())
 
-    security.declareProtected('Manage repositories', 'manage_edit')
-
+    @security.protected('Manage repositories')
     def manage_edit(self, REQUEST=None):
         """Change object properties."""
         if REQUEST is not None:

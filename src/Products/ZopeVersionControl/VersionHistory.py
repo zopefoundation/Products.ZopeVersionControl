@@ -48,31 +48,26 @@ class VersionHistory(Implicit, Persistent):
 
     security = ClassSecurityInfo()
 
-    security.declarePublic('getId')
-
+    @security.public
     def getId(self):
         return self.id
 
-    security.declarePrivate('addLogEntry')
-
+    @security.private
     def addLogEntry(self, version_id, action, path=None, message=''):
         """Add a new log entry associated with this version history."""
         entry = LogEntry(version_id, action, path, message)
         self._eventLog.addEntry(entry)
 
-    security.declarePrivate('getLogEntries')
-
+    @security.private
     def getLogEntries(self):
         """Return a sequence of the log entries for this version history."""
         return self._eventLog.getEntries()
 
-    security.declarePrivate('getLabels')
-
+    @security.private
     def getLabels(self):
         return self._labels.keys()
 
-    security.declarePrivate('labelVersion')
-
+    @security.private
     def labelVersion(self, version_id, label, force=0):
         """Associate a particular version in a version history with the
            given label, removing any existing association with that label
@@ -90,8 +85,7 @@ class VersionHistory(Implicit, Persistent):
             del self._labels[label]
         self._labels[label] = version_id
 
-    security.declarePrivate('createBranch')
-
+    @security.private
     def createBranch(self, branch_id, version_id):
         """Create a new branch associated with the given branch_id. The
            new branch is rooted at the version named by version_id."""
@@ -103,8 +97,7 @@ class VersionHistory(Implicit, Persistent):
         self._branches[branch_id] = branch
         return branch
 
-    security.declarePrivate('createVersion')
-
+    @security.private
     def createVersion(self, object, branch_id):
         """Create a new version in the line of descent named by the given
            branch_id, returning the newly created version object."""
@@ -141,21 +134,18 @@ class VersionHistory(Implicit, Persistent):
         version.saveState(object)
         return version.__of__(self)
 
-    security.declarePrivate('hasVersionId')
-
+    @security.private
     def hasVersionId(self, version_id):
         """Return true if history contains a version with the given id."""
         return version_id in self._versions
 
-    security.declarePrivate('isLatestVersion')
-
+    @security.private
     def isLatestVersion(self, version_id, branch_id):
         """Return true if version id is the latest in its branch."""
         branch = self._branches[branch_id]
         return version_id == branch.latest()
 
-    security.declarePrivate('getLatestVersion')
-
+    @security.private
     def getLatestVersion(self, branch_id):
         """Return the latest version object within the given branch, or
            None if the branch contains no versions."""
@@ -163,8 +153,7 @@ class VersionHistory(Implicit, Persistent):
         version = self._versions[branch.latest()]
         return version.__of__(self)
 
-    security.declarePrivate('findBranchId')
-
+    @security.private
     def findBranchId(self, version_id):
         """Given a version id, return the id of the branch of the version.
            Note that we cheat, since we can find this out from the id."""
@@ -173,8 +162,7 @@ class VersionHistory(Implicit, Persistent):
             return parts[-2]
         return 'mainline'
 
-    security.declarePrivate('getVersionById')
-
+    @security.private
     def getVersionById(self, version_id):
         """Return the version object named by the given version id, or
            raise a VersionControlError if the version is not found."""
@@ -185,8 +173,7 @@ class VersionHistory(Implicit, Persistent):
             )
         return version.__of__(self)
 
-    security.declarePrivate('getVersionByLabel')
-
+    @security.private
     def getVersionByLabel(self, label):
         """Return the version associated with the given label, or None
            if no version matches the given label."""
@@ -196,8 +183,7 @@ class VersionHistory(Implicit, Persistent):
             return None
         return version.__of__(self)
 
-    security.declarePrivate('getVersionByDate')
-
+    @security.private
     def getVersionByDate(self, branch_id, timestamp):
         """Return the last version committed in the given branch on or
            before the given time value. The timestamp should be a float
@@ -228,8 +214,7 @@ class VersionHistory(Implicit, Persistent):
                 return rootver.__of__(self)
             branch = self._branches[rootver.branch]
 
-    security.declarePrivate('getVersionIds')
-
+    @security.private
     def getVersionIds(self, branch_id=None):
         """Return a sequence of version ids for the versions in this
            version history. If a branch_id is given, only version ids
@@ -262,14 +247,12 @@ class BranchInfo(Implicit, Persistent):
         self.name = name
         self.root = root
 
-    security.declarePublic('getId')
-
+    @security.public
     def getId(self):
         """Return the name of the object as string."""
         return self.name
 
-    security.declarePrivate('append')
-
+    @security.private
     def append(self, version):
         """Append a version to the branch information. Note that this
            does not store the actual version, but metadata about the
@@ -282,14 +265,12 @@ class BranchInfo(Implicit, Persistent):
         timestamp = int(version.date_created / 60.0)
         self.m_date[timestamp] = key
 
-    security.declarePrivate('versionIds')
-
+    @security.private
     def versionIds(self):
         """Return a newest-first sequence of version ids in the branch."""
         return self.m_order.values()
 
-    security.declarePrivate('latest')
-
+    @security.private
     def latest(self):
         """Return the version id of the latest version in the branch."""
         mapping = self.m_order

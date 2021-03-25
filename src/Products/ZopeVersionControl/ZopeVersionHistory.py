@@ -15,15 +15,9 @@ import AccessControl
 import OFS
 from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
+from OFS.role import RoleManager
 
 from . import VersionHistory
-
-
-# BBB Zope 2.12
-try:
-    from OFS.role import RoleManager
-except ImportError:
-    from AccessControl.Role import RoleManager
 
 
 class ZopeVersionHistory(
@@ -63,8 +57,7 @@ class ZopeVersionHistory(
         'dtml/VersionHistoryProperties', globals()
     )
 
-    security.declareProtected('Manage repositories', 'manage_edit')
-
+    @security.protected('Manage repositories')
     def manage_edit(self, REQUEST=None):
         """Change object properties."""
         if REQUEST is not None:
@@ -79,18 +72,15 @@ class ZopeVersionHistory(
             return activity.__of__(self)
         raise KeyError(name)
 
-    security.declarePrivate('objectIds')
-
+    @security.private
     def objectIds(self, spec=None):
         return self._branches.keys()
 
-    security.declarePrivate('objectValues')
-
+    @security.private
     def objectValues(self, spec=None):
         return self._branches.values()
 
-    security.declarePrivate('objectItems')
-
+    @security.private
     def objectItems(self, spec=None):
         return self._branches.items()
 

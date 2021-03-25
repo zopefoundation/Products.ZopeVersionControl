@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-"""Support for non-versioned data embedded in versioned objects.
-
-$Id$
-"""
+"""Support for non-versioned data embedded in versioned objects."""
 
 from Acquisition import aq_base
 from OFS.ObjectManager import ObjectManager

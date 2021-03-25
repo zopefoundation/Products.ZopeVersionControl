@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-__version__ = '2.0.1.dev0'
+__version__ = '3.0.0.dev0'
 
 setup(
     name='Products.ZopeVersionControl',
@@ -25,15 +25,22 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords='version control',
-    license='ZPL',
+    license='ZPL 2.1',
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
     url='https://github.com/zopefoundation/Products.ZopeVersionControl',
+    project_urls={
+        'Issue Tracker': ('https://github.com/zopefoundation/'
+                          'Products.ZopeVersionControl/issues'),
+        'Sources': ('https://github.com/zopefoundation/'
+                    'Products.ZopeVersionControl'),
+    },
     packages=find_packages('src'),
     package_dir={'': 'src'},
     namespace_packages=['Products'],
     include_package_data=True,
     zip_safe=False,
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*',
     install_requires=[
         'setuptools',
         'zope.interface',

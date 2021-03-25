@@ -84,27 +84,23 @@ class Version(Implicit, Persistent):
 
     security = ClassSecurityInfo()
 
-    security.declarePublic('getId')
-
+    @security.public
     def getId(self):
         return self.id
 
-    security.declarePrivate('saveState')
-
+    @security.private
     def saveState(self, obj):
         """Save the state of object as the state for this version of
            a version-controlled resource."""
         self._data = self.stateCopy(obj, self)
 
-    security.declarePrivate('copyState')
-
+    @security.private
     def copyState(self):
         """Return an independent deep copy of the state of the version."""
         data = self.__dict__.get('_data')  # Avoid __of__ hooks
         return self.stateCopy(data, self)
 
-    security.declarePrivate('stateCopy')
-
+    @security.private
     def stateCopy(self, obj, container):
         """Get a deep copy of the state of an object.
 

@@ -20,13 +20,14 @@ from .common import common_setUp
 from .common import common_tearDown
 
 
-has_refs = 1
+noPathReference = False
 try:
     from Products.References.PathReference import PathReference
 except ImportError:
-    has_refs = 0
+    noPathReference = True
 
 
+@unittest.skipIf(noPathReference, 'Products.References not available')
 class ReferenceVCTests(unittest.TestCase):
 
     setUp = common_setUp
@@ -46,16 +47,16 @@ class ReferenceVCTests(unittest.TestCase):
         folder2._true_id = "folder2"
         self.assertEqual(folder1.ref._true_id, "folder2")
 
-        self.assert_(not repository.isUnderVersionControl(folder1))
+        self.assertFalse(repository.isUnderVersionControl(folder1))
         repository.applyVersionControl(folder1)
         folder1 = self.app.folder1
-        self.assert_(repository.isUnderVersionControl(folder1))
-        self.assert_(not repository.isUnderVersionControl(folder2))
-        self.assert_(not repository.isUnderVersionControl(folder1.ref))
+        self.assertTrue(repository.isUnderVersionControl(folder1))
+        self.assertFalse(repository.isUnderVersionControl(folder2))
+        self.assertFalse(repository.isUnderVersionControl(folder1.ref))
         repository.applyVersionControl(folder2)
         folder2 = folder1.folder2
-        self.assert_(repository.isUnderVersionControl(folder2))
-        self.assert_(not repository.isUnderVersionControl(folder2.document1))
+        self.assertTrue(repository.isUnderVersionControl(folder2))
+        self.assertFalse(repository.isUnderVersionControl(folder2.document1))
 
         # Make the first version of folder1 and check it in.
         repository.checkoutResource(folder1)
@@ -96,8 +97,8 @@ class ReferenceVCTests(unittest.TestCase):
         self.assertEqual(folder1.ref._true_id, "folder2")
 
         # Verify that document3 remains an item of the reverted folder1.
-        self.assert_(hasattr(folder1, 'document3'))
-        self.assert_(str(folder1.document3) == 'some more text')
+        self.assertTrue(hasattr(folder1, 'document3'))
+        self.assertEqual(str(folder1.document3), 'some more text')
 
         # Remove document3 and verify that it doesn't reappear upon revert.
         folder1._delObject('document3')
@@ -105,11 +106,4 @@ class ReferenceVCTests(unittest.TestCase):
         folder1 = self.app.folder1
         self.assertEqual(folder1.testattr, 'container_v2')
         self.assertEqual(folder1.folder2.testattr, 'item_v2')
-        self.assert_(not hasattr(folder1, 'document3'))
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    if has_refs:
-        suite.addTest(unittest.makeSuite(ReferenceVCTests))
-    return suite
+        self.assertFalse(hasattr(folder1, 'document3'))

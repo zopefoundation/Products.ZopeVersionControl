@@ -32,8 +32,7 @@ class EventLog(Persistent):
 
     security = ClassSecurityInfo()
 
-    security.declarePrivate('addEntry')
-
+    @security.private
     def addEntry(self, entry):
         """Add a new log entry."""
         if len(self._data):
@@ -42,8 +41,7 @@ class EventLog(Persistent):
             key = MAX32
         self._data[key] = entry
 
-    security.declarePrivate('getEntries')
-
+    @security.private
     def getEntries(self):
         """Return a sequence of log entries."""
         return self._data.values()
