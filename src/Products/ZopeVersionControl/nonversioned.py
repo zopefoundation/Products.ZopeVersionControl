@@ -10,21 +10,20 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-"""Support for non-versioned data embedded in versioned objects.
+"""Support for non-versioned data embedded in versioned objects."""
 
-$Id$
-"""
-
-from .interfaces import INonVersionedData
-from .VersionSupport import isAVersionableResource
 from Acquisition import aq_base
 from OFS.ObjectManager import ObjectManager
 from zope.interface import implementer
 
+from .interfaces import INonVersionedData
+from .VersionSupport import isAVersionableResource
+
+
 try:
     # Optional support for references.
-    from Products.References.Proxy import proxyBase
     from Products.References.PathReference import PathReference
+    from Products.References.Proxy import proxyBase
 except ImportError:
     isProxyOrReference = None
 else:
@@ -56,15 +55,17 @@ def getNonVersionedDataAdapter(obj):
 def listNonVersionedObjects(obj):
     return getNonVersionedDataAdapter(obj).listNonVersionedObjects()
 
+
 def getNonVersionedData(obj):
     return getNonVersionedDataAdapter(obj).getNonVersionedData()
+
 
 def removeNonVersionedData(obj):
     getNonVersionedDataAdapter(obj).removeNonVersionedData()
 
+
 def restoreNonVersionedData(obj, dict):
     getNonVersionedDataAdapter(obj).restoreNonVersionedData(dict)
-
 
 
 @implementer(INonVersionedData)
@@ -93,7 +94,7 @@ class StandardNonVersionedDataAdapter:
     def getNonVersionedData(self):
         data = {}
         for attr in self.attrs:
-            if hasattr( aq_base(self.obj), attr ):
+            if hasattr(aq_base(self.obj), attr):
                 data[attr] = aq_base(getattr(aq_base(self.obj), attr))
         return data
 
@@ -171,13 +172,12 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
             for id in data.get('order', []):
                 try:
                     obj.moveObject(id, data['order'].index(id))
-                except AttributeError as e:
+                except AttributeError:
                     # maybe obj doesn't support .moveObject?
                     pass
-                except ValueError as e:
+                except ValueError:
                     # item 'id' doesn't exist in obj?
                     pass
-                except Exception as e:
+                except Exception:
                     # Just bail, it's not worth failing on...
                     pass
-

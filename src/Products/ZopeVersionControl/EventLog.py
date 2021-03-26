@@ -11,13 +11,15 @@
 #
 ##############################################################################
 
-from .Utility import _findUserId
-from AccessControl.class_init import InitializeClass
+import time
+
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from BTrees.IOBTree import IOBTree
 from Persistence import Persistent
 
-import time
+from .Utility import _findUserId
+
 
 MAX32 = int(2**31 - 1)
 
@@ -30,7 +32,7 @@ class EventLog(Persistent):
 
     security = ClassSecurityInfo()
 
-    security.declarePrivate('addEntry')
+    @security.private
     def addEntry(self, entry):
         """Add a new log entry."""
         if len(self._data):
@@ -39,7 +41,7 @@ class EventLog(Persistent):
             key = MAX32
         self._data[key] = entry
 
-    security.declarePrivate('getEntries')
+    @security.private
     def getEntries(self):
         """Return a sequence of log entries."""
         return self._data.values()
@@ -49,6 +51,7 @@ class EventLog(Persistent):
 
     def __nonzero__(self):
         return len(self._data) > 0
+
 
 InitializeClass(EventLog)
 
@@ -72,5 +75,6 @@ class LogEntry(Persistent):
         self.message = message
         self.user_id = _findUserId()
         self.path = path
+
 
 InitializeClass(LogEntry)

@@ -11,20 +11,21 @@
 #
 ##############################################################################
 
-from . import ZopeRepository
 from AccessControl.class_init import InitializeClass
 from App.ImageFile import ImageFile
+
+from . import ZopeRepository
 
 
 def initialize(context):
 
     context.registerClass(
-        instance_class = ZopeRepository.ZopeRepository,
-        meta_type      = 'Repository',
-        permission     = 'Add Repositories',
-        constructors   = ZopeRepository.constructors,
-        icon           = 'www/Repository.gif'
-      )
+        instance_class=ZopeRepository.ZopeRepository,
+        meta_type='Repository',
+        permission='Add Repositories',
+        constructors=ZopeRepository.constructors,
+        icon='www/Repository.gif'
+    )
 
     registerIcon('VersionHistory.gif')
     registerIcon('Version.gif')
@@ -33,12 +34,14 @@ def initialize(context):
 def install_hack():
     # Hackery - don't try this at home, kids. :) This is temporary for
     # testing purposes only.
+    import App.Management
+    import OFS.SimpleItem
+
     from .VersionSupport import VersionSupport
-    import OFS.SimpleItem, App.Management
 
     method = App.Management.Tabs.filtered_manage_options
-    def filtered_manage_options(self, REQUEST=None, method = method,
-                                options = VersionSupport.manage_options):
+    def filtered_manage_options(self, REQUEST=None, method=method,
+                                options=VersionSupport.manage_options):
         result = method(self, REQUEST)
         for item in result:
             if item.get('label') == 'Version Control':

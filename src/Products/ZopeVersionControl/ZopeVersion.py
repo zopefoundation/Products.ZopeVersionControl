@@ -11,18 +11,13 @@
 #
 ##############################################################################
 
-from . import Version
+import AccessControl
+import OFS
 from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
+from OFS.role import RoleManager
 
-import OFS
-import AccessControl
-
-# BBB Zope 2.12
-try:
-    from OFS.role import RoleManager
-except ImportError:
-    from AccessControl.Role import RoleManager
+from . import Version
 
 
 class ZopeVersion(Version.Version, RoleManager, OFS.SimpleItem.Item):
@@ -34,17 +29,17 @@ class ZopeVersion(Version.Version, RoleManager, OFS.SimpleItem.Item):
 
     meta_type = 'Version'
 
-    manage_options=(
-        ( {'label': 'Information',  'action':'manage_main',
-           'help': ('ZopeVersionControl', 'Version-Manage.stx')},
-          {'label': 'Properties', 'action':'manage_properties_form',
-           'help': ('ZopeVersionControl', 'Version-Properties.stx')},
-        ) +
+    manage_options = (
+        ({'label': 'Information', 'action': 'manage_main',
+          'help': ('ZopeVersionControl', 'Version-Manage.stx')},
+         {'label': 'Properties', 'action': 'manage_properties_form',
+          'help': ('ZopeVersionControl', 'Version-Properties.stx')},
+         ) +
         RoleManager.manage_options +
         OFS.SimpleItem.Item.manage_options
-        )
+    )
 
-    icon='misc_/ZopeVersionControl/Version.gif'
+    icon = 'misc_/ZopeVersionControl/Version.gif'
 
     security.declareProtected('View management screens', 'manage_main')
     manage_main = DTMLFile('dtml/VersionManageMain', globals())
@@ -53,17 +48,18 @@ class ZopeVersion(Version.Version, RoleManager, OFS.SimpleItem.Item):
 
     security.declareProtected(
         'View management screens', 'manage_properties_form'
-        )
+    )
     manage_properties_form = DTMLFile('dtml/VersionProperties', globals())
 
-    security.declareProtected('Manage repositories', 'manage_edit')
+    @security.protected('Manage repositories')
     def manage_edit(self, REQUEST=None):
         """Change object properties."""
         if REQUEST is not None:
-            message="Saved changes."
+            message = "Saved changes."
             return self.manage_properties_form(
                 self, REQUEST, manage_tabs_message=message
 
-                )
+            )
+
 
 InitializeClass(ZopeVersion)

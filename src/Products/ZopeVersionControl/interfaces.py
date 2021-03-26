@@ -10,9 +10,6 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-
-__version__='$Revision: 1.7 $'[11:-2]
-
 from zope.interface import Interface
 
 
@@ -180,6 +177,7 @@ class IVersionControl(Interface):
         Permission: Use version control
         """
 
+
 class IVersionInfo(Interface):
     """The IVersionInfo interface provides access to version control
        bookkeeping information. The fields provided by this interface
@@ -204,6 +202,7 @@ class IVersionInfo(Interface):
          user_id - the id of the effective user at the time the bookkeeping
          information was created.
          """
+
 
 class ILogEntry(Interface):
     """The ILogEntry interface provides access to the information in an
@@ -265,5 +264,6 @@ class INonVersionedData(Interface):
         The version repository uses this method after reverting an
         object to a revision.
         """
+
 
 IVersionedContainer = INonVersionedData

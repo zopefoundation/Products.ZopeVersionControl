@@ -1,20 +1,16 @@
 Changelog
 =========
 
-2.0.1 (unreleased)
+3.0.0 (unreleased)
 ------------------
 
 Breaking changes:
 
-- *add item here*
+- Drop support for Zope 2.x.
 
 New features:
 
-- *add item here*
-
-Bug fixes:
-
-- *add item here*
+- Add support for Python 3.9.
 
 
 2.0.0 (2020-03-09)

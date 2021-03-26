@@ -11,22 +11,29 @@
 #
 ##############################################################################
 
-from . import Utility
-from .EventLog import LogEntry
-from .nonversioned import getNonVersionedData, restoreNonVersionedData
-from .Utility import isAVersionableResource, VersionControlError, VersionInfo
-from .Utility import use_vc_permission, _findPath
-from .ZopeVersionHistory import ZopeVersionHistory
+import time
+from random import randint
+
 from AccessControl import ClassSecurityInfo
-from Acquisition import Implicit, aq_parent, aq_inner
 from AccessControl.class_init import InitializeClass
+from Acquisition import Implicit
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from BTrees.OIBTree import OIBTree
 from BTrees.OOBTree import OOBTree
 from DateTime.DateTime import DateTime
 from Persistence import Persistent
-from random import randint
 
-import time
+from . import Utility
+from .EventLog import LogEntry
+from .nonversioned import getNonVersionedData
+from .nonversioned import restoreNonVersionedData
+from .Utility import VersionControlError
+from .Utility import VersionInfo
+from .Utility import _findPath
+from .Utility import isAVersionableResource
+from .Utility import use_vc_permission
+from .ZopeVersionHistory import ZopeVersionHistory
 
 
 class Repository(Implicit, Persistent):
@@ -45,7 +52,7 @@ class Repository(Implicit, Persistent):
 
     security = ClassSecurityInfo()
 
-    security.declarePrivate('createVersionHistory')
+    @security.private
     def createVersionHistory(self, object):
         """Internal: create a new version history for a resource."""
         # When one creates the first version in a version history, neither
@@ -58,12 +65,12 @@ class Repository(Implicit, Persistent):
         self._histories[history_id] = history
         return history.__of__(self)
 
-    security.declarePrivate('getVersionHistory')
+    @security.private
     def getVersionHistory(self, history_id):
         """Internal: return a version history given a version history id."""
         return self._histories[history_id].__of__(self)
 
-    security.declarePrivate('replaceState')
+    @security.private
     def replaceState(self, obj, new_state):
         """Internal: replace the state of a persistent object.
         """
@@ -79,7 +86,7 @@ class Repository(Implicit, Persistent):
                 % (repr(obj.__class__), repr(new_state.__class__)))
         obj._p_changed = 1
         for key in list(obj.__dict__.keys()):
-            if not key in new_state.__dict__:
+            if key not in new_state.__dict__:
                 del obj.__dict__[key]
         for key, value in new_state.__dict__.items():
             obj.__dict__[key] = value
@@ -92,21 +99,21 @@ class Repository(Implicit, Persistent):
     # This is the implementation of the public version control interface.
     #####################################################################
 
-    security.declarePublic('isAVersionableResource')
+    @security.public
     def isAVersionableResource(self, obj):
         # For now, an object must be persistent (have its own db record)
         # in order to be considered a versionable resource.
         return isAVersionableResource(obj)
 
-    security.declarePublic('isUnderVersionControl')
+    @security.public
     def isUnderVersionControl(self, object):
         info = getattr(object, '__vc_info__', None)
         if info is None:
             return False
         return info.history_id in self._histories and \
-               self._histories[info.history_id].hasVersionId(info.version_id)
+            self._histories[info.history_id].hasVersionId(info.version_id)
 
-    security.declarePublic('isResourceUpToDate')
+    @security.public
     def isResourceUpToDate(self, object, require_branch=0):
         info = self.getVersionInfo(object)
         history = self.getVersionHistory(info.history_id)
@@ -121,7 +128,7 @@ class Repository(Implicit, Persistent):
                 return 0
         return history.isLatestVersion(info.version_id, branch)
 
-    security.declarePublic('isResourceChanged')
+    @security.public
     def isResourceChanged(self, object):
         # Return true if the state of a resource has changed in a transaction
         # *after* the version bookkeeping was saved. Note that this method is
@@ -135,25 +142,25 @@ class Repository(Implicit, Persistent):
             return 0
         return mtime > itime
 
-    security.declarePublic('getVersionInfo')
+    @security.public
     def getVersionInfo(self, object):
         info = getattr(object, '__vc_info__', None)
         if info is not None:
             return info
         raise VersionControlError(
             'The specified resource is not under version control.'
-            )
+        )
 
-    security.declareProtected(use_vc_permission, 'applyVersionControl')
+    @security.protected(use_vc_permission)
     def applyVersionControl(self, object, message=None):
         if self.isUnderVersionControl(object):
             raise VersionControlError(
                 'The resource is already under version control.'
-                )
+            )
         if not self.isAVersionableResource(object):
             raise VersionControlError(
                 'This resource cannot be put under version control.'
-                )
+            )
 
         # Need to check the parent to see if the container of the object
         # being put under version control is itself a version-controlled
@@ -187,25 +194,25 @@ class Repository(Implicit, Persistent):
                             )
         return object
 
-    security.declareProtected(use_vc_permission, 'checkoutResource')
+    @security.protected(use_vc_permission)
     def checkoutResource(self, object):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_IN:
             raise VersionControlError(
                 'The selected resource is already checked out.'
-                )
+            )
 
         if info.sticky and info.sticky[0] != 'B':
             raise VersionControlError(
                 'The selected resource has been updated to a particular '
                 'version, label or date. The resource must be updated to '
                 'the mainline or a branch before it may be checked out.'
-                )
+            )
 
         if not self.isResourceUpToDate(object):
             raise VersionControlError(
                 'The selected resource is not up to date!'
-                )
+            )
 
         history = self.getVersionHistory(info.history_id)
         ob_path = _findPath(object)
@@ -222,25 +229,25 @@ class Repository(Implicit, Persistent):
         object.__vc_info__ = newinfo
         return object
 
-    security.declareProtected(use_vc_permission, 'checkinResource')
+    @security.protected(use_vc_permission)
     def checkinResource(self, object, message=''):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_OUT:
             raise VersionControlError(
                 'The selected resource is not checked out.'
-                )
+            )
 
         if info.sticky and info.sticky[0] != 'B':
             raise VersionControlError(
                 'The selected resource has been updated to a particular '
                 'version, label or date. The resource must be updated to '
                 'the mainline or a branch before it may be checked in.'
-                )
+            )
 
         if not self.isResourceUpToDate(object):
             raise VersionControlError(
                 'The selected resource is not up to date!'
-                )
+            )
 
         history = self.getVersionHistory(info.history_id)
         ob_path = _findPath(object)
@@ -265,13 +272,13 @@ class Repository(Implicit, Persistent):
         object.__vc_info__ = newinfo
         return object
 
-    security.declareProtected(use_vc_permission, 'uncheckoutResource')
+    @security.protected(use_vc_permission)
     def uncheckoutResource(self, object):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_OUT:
             raise VersionControlError(
                 'The selected resource is not checked out.'
-                )
+            )
 
         history = self.getVersionHistory(info.history_id)
         ob_path = _findPath(object)
@@ -295,13 +302,13 @@ class Repository(Implicit, Persistent):
         new_obj.__vc_info__ = newinfo
         return new_obj
 
-    security.declareProtected(use_vc_permission, 'updateResource')
+    @security.protected(use_vc_permission)
     def updateResource(self, object, selector=None):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_IN:
             raise VersionControlError(
                 'The selected resource must be checked in to be updated.'
-                )
+            )
 
         history = self.getVersionHistory(info.history_id)
         version = None
@@ -329,15 +336,15 @@ class Repository(Implicit, Persistent):
             # If the selector is non-null, we find the version specified
             # and update the sticky tag. Later we'll check the version we
             # found and decide whether we really need to update the object.
-            if type(selector) is str and history.hasVersionId(selector):
+            if isinstance(selector, str) and history.hasVersionId(selector):
                 version = history.getVersionById(selector)
                 sticky = ('V', selector)
 
-            elif type(selector) is str and selector in self._labels:
+            elif isinstance(selector, str) and selector in self._labels:
                 version = history.getVersionByLabel(selector)
                 sticky = ('L', selector)
 
-            elif type(selector) is str and selector in self._branches:
+            elif isinstance(selector, str) and selector in self._branches:
                 version = history.getLatestVersion(selector)
                 if selector == 'mainline':
                     sticky = None
@@ -349,7 +356,7 @@ class Repository(Implicit, Persistent):
                 except Exception:
                     raise VersionControlError(
                         'Invalid version selector: %s' % selector
-                        )
+                    )
                 else:
                     timestamp = date.timeTime()
                     sticky = ('D', timestamp)
@@ -379,27 +386,27 @@ class Repository(Implicit, Persistent):
         new_object.__vc_info__ = newinfo
         return new_object
 
-    security.declareProtected(use_vc_permission, 'labelResource')
+    @security.protected(use_vc_permission)
     def labelResource(self, object, label, force=0):
         info = self.getVersionInfo(object)
         if info.status != info.CHECKED_IN:
             raise VersionControlError(
                 'The selected resource must be checked in to be labeled.'
-                )
+            )
 
         # Make sure that labels and branch ids do not collide.
         if label in self._branches or label == 'mainline':
             raise VersionControlError(
                 'The label value given is already in use as an activity id.'
-                )
-        if not label in self._labels:
+            )
+        if label not in self._labels:
             self._labels[label] = 1
 
         history = self.getVersionHistory(info.history_id)
         history.labelVersion(info.version_id, label, force)
         return object
 
-    security.declareProtected(use_vc_permission, 'makeActivity')
+    @security.protected(use_vc_permission)
     def makeActivity(self, object, branch_id):
         # Note - this is not part of the official version control API yet.
         # It is here to allow unit testing of the architectural aspects
@@ -409,7 +416,7 @@ class Repository(Implicit, Persistent):
         if info.status != info.CHECKED_IN:
             raise VersionControlError(
                 'The selected resource must be checked in.'
-                )
+            )
 
         branch_id = branch_id or None
 
@@ -417,9 +424,9 @@ class Repository(Implicit, Persistent):
         if branch_id in self._labels or branch_id == 'mainline':
             raise VersionControlError(
                 'The value given is already in use as a version label.'
-                )
+            )
 
-        if not branch_id in self._branches:
+        if branch_id not in self._branches:
             self._branches[branch_id] = 1
 
         history = self.getVersionHistory(info.history_id)
@@ -427,12 +434,12 @@ class Repository(Implicit, Persistent):
         if branch_id in history._branches:
             raise VersionControlError(
                 'The resource is already associated with the given activity.'
-                )
+            )
 
         history.createBranch(branch_id, info.version_id)
         return object
 
-    security.declareProtected(use_vc_permission, 'getVersionOfResource')
+    @security.protected(use_vc_permission)
     def getVersionOfResource(self, history_id, selector):
         history = self.getVersionHistory(history_id)
         sticky = None
@@ -452,11 +459,12 @@ class Repository(Implicit, Persistent):
                 version = history.getLatestVersion(selector)
                 sticky = ('B', selector)
             else:
-                try: date = DateTime(selector)
-                except:
+                try:
+                    date = DateTime(selector)
+                except BaseException:
                     raise VersionControlError(
                         'Invalid version selector: %s' % selector
-                        )
+                    )
                 else:
                     timestamp = date.timeTime()
                     sticky = ('D', timestamp)
@@ -470,22 +478,23 @@ class Repository(Implicit, Persistent):
         object.__vc_info__ = info
         return object
 
-    security.declareProtected(use_vc_permission, 'getVersionIds')
+    @security.protected(use_vc_permission)
     def getVersionIds(self, object):
         info = self.getVersionInfo(object)
         history = self.getVersionHistory(info.history_id)
         return history.getVersionIds()
 
-    security.declareProtected(use_vc_permission, 'getLabelsForResource')
+    @security.protected(use_vc_permission)
     def getLabelsForResource(self, object):
         info = self.getVersionInfo(object)
         history = self.getVersionHistory(info.history_id)
         return history.getLabels()
 
-    security.declareProtected(use_vc_permission, 'getLogEntries')
+    @security.protected(use_vc_permission)
     def getLogEntries(self, object):
         info = self.getVersionInfo(object)
         history = self.getVersionHistory(info.history_id)
         return history.getLogEntries()
+
 
 InitializeClass(Repository)

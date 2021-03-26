@@ -15,17 +15,18 @@ import os
 import time
 
 from AccessControl import getSecurityManager
-from App.Common import package_home
 from AccessControl.class_init import InitializeClass
+from App.Common import package_home
 from Persistence import Persistent
 from ZODB.TimeStamp import TimeStamp
+
 
 try:
     from ZODB.serialize import referencesf
 except ImportError:  # < Zope 2.8 / ZODB 3.3
     from ZODB.referencesf import referencesf
 
-_dtmldir = os.path.join( package_home( globals() ), 'dtml' )
+_dtmldir = os.path.join(package_home(globals()), 'dtml')
 
 use_vc_permission = 'Use version control'
 
@@ -39,6 +40,7 @@ def isAVersionableResource(obj):
     if getattr(obj, '__non_versionable__', 0):
         return 0
     return hasattr(obj, '_p_oid')
+
 
 class VersionInfo(Persistent):
     """A VersionInfo object contains bookkeeping information for version
@@ -76,8 +78,8 @@ class VersionInfo(Persistent):
         info.timestamp = time.time()
         return info
 
-InitializeClass(VersionInfo)
 
+InitializeClass(VersionInfo)
 
 
 class ReadOnlyJar:
@@ -94,25 +96,25 @@ class ReadOnlyJar:
     def commit(*args, **kw):
         raise VersionControlError(
             'Old versions of objects cannot be modified.'
-            )
+        )
 
     def abort(*args, **kw):
         pass
-
 
 
 class VersionControlError(Exception):
     pass
 
 
-
 def _findUserId():
     user = getSecurityManager().getUser()
     return user.getUserName()
 
+
 def _findPath(object):
     path = object.getPhysicalPath()
     return '/'.join(path)
+
 
 def _findModificationTime(object):
     """Find the last modification time for a version-controlled object.
