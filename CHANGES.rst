@@ -10,8 +10,7 @@ Breaking changes:
 
 New features:
 
-- Add support for Python 3.9.
-
+- Add support for Python 3.9, 3.10
 
 2.0.0 (2020-03-09)
 ------------------
