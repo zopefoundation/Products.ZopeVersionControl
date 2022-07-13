@@ -2,11 +2,11 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-__version__ = '3.0.0.dev0'
+version = '3.0.0.dev0'
 
 setup(
     name='Products.ZopeVersionControl',
-    version=__version__,
+    version=version,
     description="Zope Version Control",
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
