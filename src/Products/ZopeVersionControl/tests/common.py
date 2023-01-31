@@ -27,7 +27,7 @@ def common_setUp(self):
     import Products.ZopeVersionControl
     Products.ZopeVersionControl.install_hack()
 
-    from six import StringIO
+    from io import StringIO
 
     from ZODB import DB
     from ZODB.DemoStorage import DemoStorage
