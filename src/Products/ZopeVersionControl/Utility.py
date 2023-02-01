@@ -18,13 +18,9 @@ from AccessControl import getSecurityManager
 from AccessControl.class_init import InitializeClass
 from App.Common import package_home
 from Persistence import Persistent
+from ZODB.serialize import referencesf
 from ZODB.TimeStamp import TimeStamp
 
-
-try:
-    from ZODB.serialize import referencesf
-except ImportError:  # < Zope 2.8 / ZODB 3.3
-    from ZODB.referencesf import referencesf
 
 _dtmldir = os.path.join(package_home(globals()), 'dtml')
 

@@ -747,6 +747,7 @@ class VersionControlTestsWithCommits(VersionControlTests):
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(VersionControlTests))
-    suite.addTest(unittest.makeSuite(VersionControlTestsWithCommits))
+    loader = unittest.defaultTestLoader
+    suite.addTest(loader.loadTestsFromTestCase(VersionControlTests))
+    suite.addTest(loader.loadTestsFromTestCase(VersionControlTestsWithCommits))
     return suite
