@@ -12,6 +12,7 @@
 ##############################################################################
 
 import time
+from io import BytesIO
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
@@ -19,7 +20,6 @@ from Acquisition import Implicit
 from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
 from Persistence import Persistent
-from ZODB._compat import BytesIO
 from ZODB._compat import Pickler
 from ZODB._compat import Unpickler
 

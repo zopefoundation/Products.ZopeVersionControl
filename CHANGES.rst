@@ -4,6 +4,8 @@ Changelog
 4.1 (unreleased)
 ----------------
 
+- Add support for Python 3.12 and ZODB 6.
+
 
 4.0 (2023-02-01)
 ----------------
