@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='Products.ZopeVersionControl',
-    version='4.1',
+    version='4.2.dev0',
     description="Zope Version Control",
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
