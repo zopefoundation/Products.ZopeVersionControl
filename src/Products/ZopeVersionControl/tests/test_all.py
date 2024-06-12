@@ -22,7 +22,7 @@ from Products.ZopeVersionControl.tests import testVersionControl
 try:
     from Products import References
     del References
-except ImportError:
+except ImportError:  # this is not a ModuleNotFoundError
     # References product is not available
     testReferenceVersioning = None
 else:

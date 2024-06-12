@@ -24,9 +24,10 @@ try:
     # Optional support for references.
     from Products.References.PathReference import PathReference
     from Products.References.Proxy import proxyBase
-except ImportError:
+except ModuleNotFoundError:
     isProxyOrReference = None
 else:
+
     def isProxyOrReference(obj):
         if proxyBase(obj) is not aq_base(obj):
             return 1
@@ -122,8 +123,8 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
             obj._delOb(name)
             removed[name] = 1
         if obj._objects:
-            obj._objects = tuple([info for info in obj._objects
-                                  if info['id'] not in removed])
+            obj._objects = tuple(
+                [info for info in obj._objects if info['id'] not in removed])
 
     def getNonVersionedData(self):
         contents = {}
@@ -161,8 +162,10 @@ class ObjectManagerNonVersionedDataAdapter(StandardNonVersionedDataAdapter):
                 if not hasattr(obj, '_tree'):
                     # Avoid generating events, since nothing was ever really
                     # removed or added.
-                    obj._objects += ({'meta_type': value.meta_type,
-                                      'id': name},)
+                    obj._objects += ({
+                        'meta_type': value.meta_type,
+                        'id': name
+                    }, )
                 # If there is a _tree attribute, it's very likely
                 # a BTreeFolder2, which doesn't need or want the
                 # _objects attribute.

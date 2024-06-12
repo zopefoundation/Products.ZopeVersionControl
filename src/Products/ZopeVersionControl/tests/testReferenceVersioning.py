@@ -23,7 +23,7 @@ from .common import common_tearDown
 noPathReference = False
 try:
     from Products.References.PathReference import PathReference
-except ImportError:
+except ModuleNotFoundError:
     noPathReference = True
 
 
