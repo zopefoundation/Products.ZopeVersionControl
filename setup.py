@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='Products.ZopeVersionControl',
-    version='4.2.dev0',
+    version='5.0.dev0',
     description="Zope Version Control",
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
@@ -13,7 +13,6 @@ setup(
         'Framework :: Zope :: 5',
         'License :: OSI Approved :: Zope Public License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
@@ -37,7 +36,7 @@ setup(
     namespace_packages=['Products'],
     include_package_data=True,
     zip_safe=False,
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     install_requires=[
         'setuptools',
         'zope.interface',
