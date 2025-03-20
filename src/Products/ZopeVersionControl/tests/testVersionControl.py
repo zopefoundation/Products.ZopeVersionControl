@@ -394,7 +394,7 @@ class VersionControlTests(unittest.TestCase):
             self.assertFalse(repository.isResourceChanged(document))
 
         info = repository.getVersionInfo(document)
-        self.assertTrue(info.sticky is None)
+        self.assertIsNone(info.sticky)
         first_version = info.version_id
 
         activity_name = 'My Big Project'
