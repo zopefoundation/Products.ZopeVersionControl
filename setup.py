@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='Products.ZopeVersionControl',
-    version='5.1.dev0',
+    version='5.1',
     description="Zope Version Control",
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
@@ -39,6 +39,7 @@ setup(
         'ZODB',
         'Zope',
     ],
+    include_package_data=True,
     entry_points={
         'zodbupdate.decode': [
             'decodes = Products.ZopeVersionControl:zodbupdate_decode_dict',
