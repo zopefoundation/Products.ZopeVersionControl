@@ -1,4 +1,3 @@
-from setuptools import find_packages
 from setuptools import setup
 
 
@@ -13,11 +12,11 @@ setup(
         'Framework :: Zope :: 5',
         'License :: OSI Approved :: Zope Public License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords='version control',
@@ -31,14 +30,8 @@ setup(
         'Sources': ('https://github.com/zopefoundation/'
                     'Products.ZopeVersionControl'),
     },
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
-    namespace_packages=['Products'],
-    include_package_data=True,
-    zip_safe=False,
-    python_requires='>=3.9',
+    python_requires='>=3.10',
     install_requires=[
-        'setuptools',
         'zope.interface',
         'Acquisition',
         'DateTime',
