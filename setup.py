@@ -1,48 +1,5 @@
 from setuptools import setup
 
 
-setup(
-    name='Products.ZopeVersionControl',
-    version='5.2.dev0',
-    description="Zope Version Control",
-    long_description=(open('README.rst').read() + "\n" +
-                      open('CHANGES.rst').read()),
-    classifiers=[
-        'Development Status :: 6 - Mature',
-        'Framework :: Zope :: 5',
-        'License :: OSI Approved :: Zope Public License',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Programming Language :: Python :: 3.13',
-        'Programming Language :: Python :: 3.14',
-        'Programming Language :: Python :: Implementation :: CPython',
-    ],
-    keywords='version control',
-    license='ZPL-2.1',
-    author='Zope Foundation and Contributors',
-    author_email='zope-dev@zope.dev',
-    url='https://github.com/zopefoundation/Products.ZopeVersionControl',
-    project_urls={
-        'Issue Tracker': ('https://github.com/zopefoundation/'
-                          'Products.ZopeVersionControl/issues'),
-        'Sources': ('https://github.com/zopefoundation/'
-                    'Products.ZopeVersionControl'),
-    },
-    python_requires='>=3.10',
-    install_requires=[
-        'zope.interface',
-        'Acquisition',
-        'DateTime',
-        'transaction',
-        'ZODB',
-        'Zope',
-    ],
-    include_package_data=True,
-    entry_points={
-        'zodbupdate.decode': [
-            'decodes = Products.ZopeVersionControl:zodbupdate_decode_dict',
-        ],
-    },
-)
+# See pyproject.toml for package metadata
+setup()
