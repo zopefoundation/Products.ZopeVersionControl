@@ -9,8 +9,8 @@
 <!-- object is under version control -->
 
 <p class="form-text">
-This object is under version control. Use the form below to perform 
-versioning related operations on the object. You may also view the 
+This object is under version control. Use the form below to perform
+versioning related operations on the object. You may also view the
 <a href="./versionControlLog">activity log</a> for this versioned resource.
 </p>
 
@@ -53,9 +53,9 @@ versioning related operations on the object. You may also view the
       </td>
       <td align="left" valign="top">
       <div class="form-element">
-      <input class="form-element" type="submit" 
-       name="checkoutResource:method" 
-       value="Checkout" /> 
+      <input class="form-element" type="submit"
+       name="checkoutResource:method"
+       value="Checkout" />
       </div>
       </td>
     </tr>
@@ -73,7 +73,7 @@ versioning related operations on the object. You may also view the
       <select name="selector">
       <option value="LATEST_VERSION"> latest version</option>
       <dtml-in getVersionIds>
-      <option value="<dtml-var sequence-item html_quote>"><dtml-var 
+      <option value="<dtml-var sequence-item html_quote>"><dtml-var
        sequence-item>
       </dtml-in>
       </select>
@@ -85,8 +85,8 @@ versioning related operations on the object. You may also view the
       </td>
       <td align="left" valign="top">
       <div class="form-element">
-      <input class="form-element" type="submit" 
-       name="updateResource:method" 
+      <input class="form-element" type="submit"
+       name="updateResource:method"
        value="Update" />
       </div>
       </td>
@@ -102,9 +102,9 @@ versioning related operations on the object. You may also view the
       <td align="left" valign="top">
       <div class="form-element">
       <br>
-      <input class="form-element" type="text" 
+      <input class="form-element" type="text"
        name="label" size="20"/>
-      <input type="hidden" name="force:int" value="1"> 
+      <input type="hidden" name="force:int" value="1">
       </div>
       </td>
     </tr>
@@ -113,8 +113,8 @@ versioning related operations on the object. You may also view the
       </td>
       <td align="left" valign="top">
       <div class="form-element">
-      <input class="form-element" type="submit" 
-       name="labelResource:method" 
+      <input class="form-element" type="submit"
+       name="labelResource:method"
        value="Label" />
       </div>
       </td>
@@ -163,9 +163,9 @@ versioning related operations on the object. You may also view the
       </td>
       <td align="left" valign="top">
       <div class="form-element">
-      <input class="form-element" type="submit" 
-       name="checkinResource:method" 
-       value="Checkin" /> 
+      <input class="form-element" type="submit"
+       name="checkinResource:method"
+       value="Checkin" />
       </div>
       </td>
     </tr>
@@ -181,9 +181,9 @@ versioning related operations on the object. You may also view the
       </div>
 
       <div class="form-element">
-      <input class="form-element" type="submit" 
-       name="uncheckoutResource:method" 
-       value="UnCheckout" /> 
+      <input class="form-element" type="submit"
+       name="uncheckoutResource:method"
+       value="UnCheckout" />
       </div>
       </td>
     </tr>
@@ -202,7 +202,7 @@ versioning related operations on the object. You may also view the
 
 <p class="form-text">
 This object is <strong>not</strong> under version control. To place
-this object under version control, click the &quot;Apply version 
+this object under version control, click the &quot;Apply version
 control&quot; button below.
 </p>
 
@@ -213,8 +213,8 @@ control&quot; button below.
     </td>
     <td align="left" valign="top">
     <div class="form-element">
-    <input class="form-element" type="submit" name="submit" 
-     value="Apply version control" /> 
+    <input class="form-element" type="submit" name="submit"
+     value="Apply version control" />
     </div>
     </td>
   </tr>
