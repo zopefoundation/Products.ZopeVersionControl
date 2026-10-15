@@ -59,12 +59,12 @@ This is a log of the version control actions performed on this resource.
   </td>
   <td align="left" valign="top">
   <div class="list-item">
-  <dtml-var "ZopeTime(timestamp)" fmt="%Y-%m-%d %H:%M:%S"> 
-  [<strong><dtml-var user_id></strong>] 
-  <strong><dtml-var "{0: 'checkout', 
-                      1: 'checkin', 
-                      2: 'uncheckout', 
-                      3: 'update'}.get(action)"></strong> 
+  <dtml-var "ZopeTime(timestamp)" fmt="%Y-%m-%d %H:%M:%S">
+  [<strong><dtml-var user_id></strong>]
+  <strong><dtml-var "{0: 'checkout',
+                      1: 'checkin',
+                      2: 'uncheckout',
+                      3: 'update'}.get(action)"></strong>
   rev &dtml-version_id; at &dtml-path;
   <p class="form-text">
   <em><dtml-if message>&dtml-message;</dtml-if></em>
