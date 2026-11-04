@@ -4,7 +4,7 @@
 </dtml-with>
 
 <script type="text/javascript">
-<!-- 
+<!--
 
 isSelected = false;
 
@@ -21,7 +21,7 @@ function toggleSelect() {
       document.objectItems.elements[i].checked = false ;
       isSelected = false;
       document.objectItems.selectButton.value = "Select All";
-      return isSelected;       
+      return isSelected;
   }
 }
 
@@ -33,7 +33,7 @@ function toggleSelect() {
 <dtml-let object="this()">
 
 <p class="form-text">
-A version history contains all the versions of a particular version  
+A version history contains all the versions of a particular version
 controlled resource.
 </p>
 
@@ -45,8 +45,8 @@ controlled resource.
   <tr>
     <td align="left" valign="top">
     <div class="form-text">
-    Items <dtml-var sequence-step-start-number> - <dtml-var 
-    sequence-step-end-number> of <dtml-var sequence-length> in 
+    Items <dtml-var sequence-step-start-number> - <dtml-var
+    sequence-step-end-number> of <dtml-var sequence-length> in
     <em><dtml-var "object.getId()"></em>
     </div>
     </td>
@@ -54,11 +54,11 @@ controlled resource.
   <div class="form-text">
 <dtml-if previous-sequence-size>
   &lt;&lt; <strong><a href="<dtml-var URL><dtml-var sequence-query
-  >query_start=<dtml-var previous-sequence-start-number>">Prev <dtml-var 
+  >query_start=<dtml-var previous-sequence-start-number>">Prev <dtml-var
   previous-sequence-size></a></strong>
 </dtml-if>
 <dtml-if next-sequence-size>
-  &nbsp;&nbsp;<strong><a href="<dtml-var URL><dtml-var 
+  &nbsp;&nbsp;<strong><a href="<dtml-var URL><dtml-var
   sequence-query>query_start=<dtml-var
   next-sequence-start-number>">Next <dtml-var
   next-sequence-size></a></strong>&nbsp;&gt&gt;</a>
@@ -94,7 +94,7 @@ controlled resource.
   </td>
   <td align="left" valign="top">
   <a href="&dtml.url_quote-getId;/manage_workspace">
-  <img src="&dtml-BASEPATH1;/&dtml-icon;" alt="&dtml-meta_type;" 
+  <img src="&dtml-BASEPATH1;/&dtml-icon;" alt="&dtml-meta_type;"
    title="&dtml-meta_type;" border="0" /></a>
   </td>
   <td align="left" valign="top">
@@ -116,11 +116,11 @@ controlled resource.
   <div class="form-text">
 <dtml-if previous-sequence-size>
   &lt;&lt; <strong><a href="<dtml-var URL><dtml-var sequence-query
-  >query_start=<dtml-var previous-sequence-start-number>">Prev <dtml-var 
+  >query_start=<dtml-var previous-sequence-start-number>">Prev <dtml-var
   previous-sequence-size></a></strong>
 </dtml-if>
 <dtml-if next-sequence-size>
-  &nbsp;&nbsp;<strong><a href="<dtml-var URL><dtml-var 
+  &nbsp;&nbsp;<strong><a href="<dtml-var URL><dtml-var
   sequence-query>query_start=<dtml-var
   next-sequence-start-number>">Next <dtml-var
   next-sequence-size></a></strong>&nbsp;&gt&gt;</a>

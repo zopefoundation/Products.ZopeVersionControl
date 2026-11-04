@@ -17,7 +17,7 @@ Properties of this version history.
     </div>
     </td>
     <td align="left" valign="top">
-    <input type="text" name="title" size="50" 
+    <input type="text" name="title" size="50"
      value="<dtml-if title><dtml-var title html_quote></dtml-if>"/>
     </td>
   </tr>
@@ -27,8 +27,8 @@ Properties of this version history.
     </td>
     <td align="left" valign="top">
     <div class="form-element">
-    <input class="form-element" type="submit" name="submit" 
-     value="Save Changes" /> 
+    <input class="form-element" type="submit" name="submit"
+     value="Save Changes" />
     </div>
     </td>
   </tr>

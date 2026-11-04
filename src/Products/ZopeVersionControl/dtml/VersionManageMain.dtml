@@ -30,7 +30,7 @@
   <td align="left" valign="top">
   <dtml-if getItemIcon>
   <a href="data/manage_workspace">
-  <img src="&dtml-BASEPATH1;/&dtml-getItemIcon;" alt="&dtml-getItemType;" 
+  <img src="&dtml-BASEPATH1;/&dtml-getItemIcon;" alt="&dtml-getItemType;"
    title="&dtml-getItemType;" border="0" /></a>
   <dtml-else>
   &nbsp;
